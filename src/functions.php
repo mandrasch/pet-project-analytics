@@ -15,7 +15,7 @@ function maybe_collect_request()
 {
     // since we call this function (early) on every AJAX request, detect our specific request here
     // this allows us to short-circuit a bunch of unrelated AJAX stuff and gain a lot of performance
-    if (!isset($_GET['action']) || $_GET['action'] !== 'koko_analytics_collect' || !defined('DOING_AJAX') || !DOING_AJAX) {
+    if (!isset($_GET['action']) || $_GET['action'] !== 'pp_analytics_collect' || !defined('DOING_AJAX') || !DOING_AJAX) {
         return;
     }
 
@@ -106,12 +106,12 @@ function collect_request()
 
     // set cookie server-side if requested (eg for AMP requests)
     if (isset($_GET['p']) && isset($_GET['nv']) && isset($_GET['sc']) && (int) $_GET['sc'] === 1) {
-        $posts_viewed = isset($_COOKIE['_koko_analytics_pages_viewed']) ? \explode(',', $_COOKIE['_koko_analytics_pages_viewed']) : array('');
+        $posts_viewed = isset($_COOKIE['_pp_analytics_pages_viewed']) ? \explode(',', $_COOKIE['_pp_analytics_pages_viewed']) : array('');
         if ((int) $_GET['nv']) {
             $posts_viewed[] = (int) $_GET['p'];
         }
         $cookie = \join(',', $posts_viewed);
-        \setcookie('_koko_analytics_pages_viewed', $cookie, time() + 6 * 3600, '/');
+        \setcookie('_pp_analytics_pages_viewed', $cookie, time() + 6 * 3600, '/');
     }
 
     exit;
@@ -119,8 +119,8 @@ function collect_request()
 
 function get_buffer_filename(): string
 {
-    if (\defined('KOKO_ANALYTICS_BUFFER_FILE')) {
-        return KOKO_ANALYTICS_BUFFER_FILE;
+    if (\defined('pp_analytics_BUFFER_FILE')) {
+        return pp_analytics_BUFFER_FILE;
     }
 
     $uploads = wp_upload_dir(null, false);
@@ -165,9 +165,9 @@ function get_settings(): array
         'default_view' => 'last_28_days',
         'is_dashboard_public' => 0,
     );
-    $settings         = (array) get_option('koko_analytics_settings', array());
+    $settings         = (array) get_option('pp_analytics_settings', array());
     $settings         = array_merge($default_settings, $settings);
-    return apply_filters('koko_analytics_settings', $settings);
+    return apply_filters('pp_analytics_settings', $settings);
 }
 
 function get_most_viewed_posts(array $args = array()): array
@@ -200,7 +200,7 @@ function get_most_viewed_posts(array $args = array()): array
         $post_types_placeholder = join(', ', array_fill(0, count($args['post_type']), '%s'));
         $sql_params             = array_merge($sql_params, $args['post_type']);
         $sql_params[]           = $args['number'];
-        $sql                    = $wpdb->prepare("SELECT p.id, SUM(pageviews) AS pageviews FROM {$wpdb->prefix}koko_analytics_post_stats s JOIN {$wpdb->posts} p ON s.id = p.id WHERE p.id NOT IN (0, %d) AND s.date >= %s AND s.date <= %s AND p.post_type IN ($post_types_placeholder) AND p.post_status = 'publish' GROUP BY p.id ORDER BY pageviews DESC LIMIT 0, %d", $sql_params);
+        $sql                    = $wpdb->prepare("SELECT p.id, SUM(pageviews) AS pageviews FROM {$wpdb->prefix}pp_analytics_post_stats s JOIN {$wpdb->posts} p ON s.id = p.id WHERE p.id NOT IN (0, %d) AND s.date >= %s AND s.date <= %s AND p.post_type IN ($post_types_placeholder) AND p.post_status = 'publish' GROUP BY p.id ORDER BY pageviews DESC LIMIT 0, %d", $sql_params);
         $results                = $wpdb->get_results($sql);
         if (empty($results)) {
             return array();
@@ -239,7 +239,7 @@ function admin_bar_menu(WP_Admin_Bar $wp_admin_bar)
     }
 
     // only show for users who can access statistics page
-    if (!current_user_can('view_koko_analytics')) {
+    if (!current_user_can('view_pp_analytics')) {
         return;
     }
 
@@ -255,7 +255,7 @@ function admin_bar_menu(WP_Admin_Bar $wp_admin_bar)
 
 function widgets_init()
 {
-    require KOKO_ANALYTICS_PLUGIN_DIR . '/src/class-widget-most-viewed-posts.php';
+    require pp_analytics_PLUGIN_DIR . '/src/class-widget-most-viewed-posts.php';
     register_widget('KokoAnalytics\Widget_Most_Viewed_Posts');
 }
 
@@ -271,7 +271,7 @@ function get_realtime_pageview_count($since = '-5 minutes'): int
         // $since is relative time string
         $since = strtotime($since);
     }
-    $counts = (array) get_option('koko_analytics_realtime_pageview_count', array());
+    $counts = (array) get_option('pp_analytics_realtime_pageview_count', array());
     $sum    = 0;
     foreach ($counts as $timestamp => $pageviews) {
         if ($timestamp > $since) {
@@ -283,11 +283,11 @@ function get_realtime_pageview_count($since = '-5 minutes'): int
 
 function using_custom_endpoint(): bool
 {
-    if (defined('KOKO_ANALYTICS_CUSTOM_ENDPOINT')) {
-        return (bool) KOKO_ANALYTICS_CUSTOM_ENDPOINT;
+    if (defined('pp_analytics_CUSTOM_ENDPOINT')) {
+        return (bool) pp_analytics_CUSTOM_ENDPOINT;
     }
 
-    return (bool) get_option('koko_analytics_use_custom_endpoint', false);
+    return (bool) get_option('pp_analytics_use_custom_endpoint', false);
 }
 
 function fmt_large_number(float $number): string

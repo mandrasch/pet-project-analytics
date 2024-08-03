@@ -21,14 +21,14 @@ class Stats
         }
         $previous_start_date = gmdate('Y-m-d', strtotime($start_date) - (strtotime($end_date . ' 23:59:59') - strtotime($start_date)));
 
-        $table = $wpdb->prefix . 'koko_analytics_site_stats';
+        $table = $wpdb->prefix . 'pp_analytics_site_stats';
         $where_a = 's.date >= %s AND s.date <= %s';
         $args_a = array($start_date, $end_date);
         $where_b = 's.date >= %s AND s.date < %s';
         $args_b = array($previous_start_date, $start_date);
 
         if ($page > 0) {
-            $table = $wpdb->prefix . 'koko_analytics_post_stats';
+            $table = $wpdb->prefix . 'pp_analytics_post_stats';
             $where_a .= ' AND s.id = %d';
             $where_b .= ' AND s.id = %d';
             $args_a[] = $page;
@@ -79,11 +79,11 @@ class Stats
         }
 
         if ($page > 0) {
-            $table = $wpdb->prefix . 'koko_analytics_post_stats';
+            $table = $wpdb->prefix . 'pp_analytics_post_stats';
             $join_on = 's.date = d.date AND s.id = %d';
             $args = array($date_format, $page, $start_date, $end_date);
         } else {
-            $table = $wpdb->prefix . 'koko_analytics_site_stats';
+            $table = $wpdb->prefix . 'pp_analytics_site_stats';
             $args = array($date_format, $start_date, $end_date);
             $join_on = 's.date = d.date';
         }
@@ -91,7 +91,7 @@ class Stats
         $sql = $wpdb->prepare(
             "
                 SELECT DATE_FORMAT(d.date, %s) AS _date, COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews
-                FROM {$wpdb->prefix}koko_analytics_dates d
+                FROM {$wpdb->prefix}pp_analytics_dates d
                     LEFT JOIN {$table} s ON {$join_on}
                 WHERE d.date >= %s AND d.date <= %s
                 GROUP BY _date",
@@ -114,7 +114,7 @@ class Stats
         $sql = $wpdb->prepare(
             "
                 SELECT s.id, SUM(visitors) AS visitors, SUM(pageviews) AS pageviews
-                FROM {$wpdb->prefix}koko_analytics_post_stats s
+                FROM {$wpdb->prefix}pp_analytics_post_stats s
                 WHERE s.date >= %s AND s.date <= %s
                 GROUP BY s.id
                 ORDER BY pageviews DESC, s.id ASC
@@ -151,8 +151,8 @@ class Stats
         $sql = $wpdb->prepare(
             "
                 SELECT s.id, url, SUM(visitors) As visitors, SUM(pageviews) AS pageviews
-                FROM {$wpdb->prefix}koko_analytics_referrer_stats s
-                    JOIN {$wpdb->prefix}koko_analytics_referrer_urls r ON r.id = s.id
+                FROM {$wpdb->prefix}pp_analytics_referrer_stats s
+                    JOIN {$wpdb->prefix}pp_analytics_referrer_urls r ON r.id = s.id
                 WHERE s.date >= %s
                   AND s.date <= %s
                 GROUP BY s.id

@@ -34,9 +34,9 @@ phpcs:disable PSR1.Files.SideEffects
 
 namespace KokoAnalytics;
 
-\define('KOKO_ANALYTICS_VERSION', '1.3.10');
-\define('KOKO_ANALYTICS_PLUGIN_FILE', __FILE__);
-\define('KOKO_ANALYTICS_PLUGIN_DIR', __DIR__);
+\define('pp_analytics_VERSION', '1.3.10');
+\define('pp_analytics_PLUGIN_FILE', __FILE__);
+\define('pp_analytics_PLUGIN_DIR', __DIR__);
 
 // Load the Koko Analytics autoloader
 require __DIR__ . '/autoload.php';
@@ -64,4 +64,4 @@ if (\class_exists('WP_CLI')) {
 }
 
 add_action('widgets_init', 'KokoAnalytics\widgets_init');
-add_action('koko_analytics_test_custom_endpoint', 'KokoAnalytics\test_custom_endpoint');
+add_action('pp_analytics_test_custom_endpoint', 'KokoAnalytics\test_custom_endpoint');

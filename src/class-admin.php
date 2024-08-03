@@ -16,13 +16,13 @@ class Admin
 
         add_action('init', array($this, 'maybe_run_actions'), 10, 0);
         add_action('admin_menu', array($this, 'register_menu'), 10, 0);
-        add_action('koko_analytics_install_optimized_endpoint', array($this, 'install_optimized_endpoint'), 10, 0);
-        add_action('koko_analytics_save_settings', array($this, 'save_settings'), 10, 0);
-        add_action('koko_analytics_reset_statistics', array($this, 'reset_statistics'), 10, 0);
+        add_action('pp_analytics_install_optimized_endpoint', array($this, 'install_optimized_endpoint'), 10, 0);
+        add_action('pp_analytics_save_settings', array($this, 'save_settings'), 10, 0);
+        add_action('pp_analytics_reset_statistics', array($this, 'reset_statistics'), 10, 0);
 
         // Hooks for plugins overview page
         if ($pagenow === 'plugins.php') {
-            $plugin_basename = plugin_basename(KOKO_ANALYTICS_PLUGIN_FILE);
+            $plugin_basename = plugin_basename(pp_analytics_PLUGIN_FILE);
             add_filter('plugin_action_links_' . $plugin_basename, array($this, 'add_plugin_settings_link'), 10, 1);
             add_filter('plugin_row_meta', array($this, 'add_plugin_meta_links'), 10, 2);
         }
@@ -30,25 +30,25 @@ class Admin
 
     public function register_menu(): void
     {
-        add_submenu_page('index.php', esc_html__('Koko Analytics', 'koko-analytics'), esc_html__('Analytics', 'koko-analytics'), 'view_koko_analytics', 'koko-analytics', array($this, 'show_page'));
+        add_submenu_page('index.php', esc_html__('Koko Analytics', 'koko-analytics'), esc_html__('Analytics', 'koko-analytics'), 'view_pp_analytics', 'koko-analytics', array($this, 'show_page'));
     }
 
     public function maybe_run_actions(): void
     {
-        if (isset($_GET['koko_analytics_action'])) {
-            $action = $_GET['koko_analytics_action'];
-        } elseif (isset($_POST['koko_analytics_action'])) {
-            $action = $_POST['koko_analytics_action'];
+        if (isset($_GET['pp_analytics_action'])) {
+            $action = $_GET['pp_analytics_action'];
+        } elseif (isset($_POST['pp_analytics_action'])) {
+            $action = $_POST['pp_analytics_action'];
         } else {
             return;
         }
 
-        if (!current_user_can('manage_koko_analytics')) {
+        if (!current_user_can('manage_pp_analytics')) {
             return;
         }
 
-        do_action('koko_analytics_' . $action);
-        wp_safe_redirect(remove_query_arg('koko_analytics_action'));
+        do_action('pp_analytics_' . $action);
+        wp_safe_redirect(remove_query_arg('pp_analytics_action'));
         exit;
     }
 
@@ -72,17 +72,17 @@ class Admin
 
         // detect issues with WP Cron event not running
         // it should run every minute, so if it didn't run in 10 minutes there is most likely something wrong
-        $next_scheduled = wp_next_scheduled('koko_analytics_aggregate_stats');
+        $next_scheduled = wp_next_scheduled('pp_analytics_aggregate_stats');
         return $next_scheduled !== false && $next_scheduled > (time() - 10 * 60);
     }
 
     public function show_page(): void
     {
-        add_action('koko_analytics_show_settings_page', array($this, 'show_settings_page'));
-        add_action('koko_analytics_show_dashboard_page', array($this, 'show_dashboard_page'));
+        add_action('pp_analytics_show_settings_page', array($this, 'show_settings_page'));
+        add_action('pp_analytics_show_dashboard_page', array($this, 'show_dashboard_page'));
 
         $tab = $_GET['tab'] ?? 'dashboard';
-        do_action("koko_analytics_show_{$tab}_page");
+        do_action("pp_analytics_show_{$tab}_page");
 
         add_action('admin_footer_text', array($this, 'footer_text'));
     }
@@ -90,7 +90,7 @@ class Admin
     public function show_dashboard_page(): void
     {
         // aggregate stats whenever this page is requested
-        do_action('koko_analytics_aggregate_stats');
+        do_action('pp_analytics_aggregate_stats');
 
         if (false === $this->is_cron_event_working()) {
             echo '<div class="notice notice-warning inline koko-analytics-cron-warning is-dismissible"><p>';
@@ -117,7 +117,7 @@ class Admin
 
     public function show_settings_page(): void
     {
-        if (!current_user_can('manage_koko_analytics')) {
+        if (!current_user_can('manage_pp_analytics')) {
             return;
         }
 
@@ -166,7 +166,7 @@ class Admin
      */
     public function add_plugin_meta_links($links, $file): array
     {
-        if ($file !== plugin_basename(KOKO_ANALYTICS_PLUGIN_FILE)) {
+        if ($file !== plugin_basename(pp_analytics_PLUGIN_FILE)) {
             return $links;
         }
 
@@ -174,7 +174,7 @@ class Admin
         $links[] = '<a href="https://www.kokoanalytics.com/kb/">' . esc_html__('Documentation', 'koko-analytics') . '</a>';
 
         // add link to Pro version, unless already running it
-        if (! \defined('KOKO_ANALYTICS_PRO_VERSION')) {
+        if (! \defined('pp_analytics_PRO_VERSION')) {
             $links[] = '<a href="https://www.kokoanalytics.com/pricing/">' . esc_html__('Koko Analytics Pro', 'koko-analytics') . '</a>';
         }
 
@@ -191,27 +191,27 @@ class Admin
 			FROM information_schema.TABLES
 			WHERE TABLE_SCHEMA = %s AND TABLE_NAME LIKE %s',
             DB_NAME,
-            $wpdb->prefix . 'koko_analytics_%'
+            $wpdb->prefix . 'pp_analytics_%'
         );
         return $wpdb->get_var($sql) ?? '??';
     }
 
     public function reset_statistics(): void
     {
-        check_admin_referer('koko_analytics_reset_statistics');
+        check_admin_referer('pp_analytics_reset_statistics');
         /** @var \WPDB $wpdb */
         global $wpdb;
-        $wpdb->query("TRUNCATE {$wpdb->prefix}koko_analytics_site_stats;");
-        $wpdb->query("TRUNCATE {$wpdb->prefix}koko_analytics_post_stats;");
-        $wpdb->query("TRUNCATE {$wpdb->prefix}koko_analytics_referrer_stats;");
-        $wpdb->query("TRUNCATE {$wpdb->prefix}koko_analytics_referrer_urls;");
-        delete_option('koko_analytics_realtime_pageview_count');
+        $wpdb->query("TRUNCATE {$wpdb->prefix}pp_analytics_site_stats;");
+        $wpdb->query("TRUNCATE {$wpdb->prefix}pp_analytics_post_stats;");
+        $wpdb->query("TRUNCATE {$wpdb->prefix}pp_analytics_referrer_stats;");
+        $wpdb->query("TRUNCATE {$wpdb->prefix}pp_analytics_referrer_urls;");
+        delete_option('pp_analytics_realtime_pageview_count');
     }
 
     public function save_settings(): void
     {
-        check_admin_referer('koko_analytics_save_settings');
-        $posted                        = $_POST['koko_analytics_settings'];
+        check_admin_referer('pp_analytics_save_settings');
+        $posted                        = $_POST['pp_analytics_settings'];
         $settings                            = get_settings();
 
         $settings['exclude_ip_addresses']    = array_filter(array_map('trim', explode(PHP_EOL, str_replace(',', PHP_EOL, strip_tags($posted['exclude_ip_addresses'])))), function ($value) {
@@ -223,8 +223,8 @@ class Admin
         $settings['is_dashboard_public']     = (int) $posted['is_dashboard_public'];
         $settings['default_view']            = trim($posted['default_view']);
 
-        $settings = apply_filters('koko_analytics_sanitize_settings', $settings, $posted);
-        update_option('koko_analytics_settings', $settings, true);
+        $settings = apply_filters('pp_analytics_sanitize_settings', $settings, $posted);
+        update_option('pp_analytics_settings', $settings, true);
         wp_safe_redirect(add_query_arg(array('settings-updated' => true), wp_get_referer()));
         exit;
     }

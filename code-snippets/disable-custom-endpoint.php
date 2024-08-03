@@ -1,3 +1,3 @@
 <?php
 
-define('KOKO_ANALYTICS_CUSTOM_ENDPOINT', false);
+define('pp_analytics_CUSTOM_ENDPOINT', false);

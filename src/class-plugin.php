@@ -22,7 +22,7 @@ class Plugin
     {
         $this->aggregator = $aggregator;
 
-        register_activation_hook(KOKO_ANALYTICS_PLUGIN_FILE, array($this, 'on_activation'));
+        register_activation_hook(pp_analytics_PLUGIN_FILE, array($this, 'on_activation'));
         add_filter('pre_update_option_active_plugins', array($this, 'filter_active_plugins'), 10, 1);
         add_action('init', array($this, 'maybe_run_db_migrations'), 10, 0);
     }
@@ -40,7 +40,7 @@ class Plugin
             return $plugins;
         }
 
-        $pattern = '/' . preg_quote(plugin_basename(KOKO_ANALYTICS_PLUGIN_FILE), '/') . '$/';
+        $pattern = '/' . preg_quote(plugin_basename(pp_analytics_PLUGIN_FILE), '/') . '$/';
         return array_merge(
             preg_grep($pattern, $plugins),
             preg_grep($pattern, $plugins, PREG_GREP_INVERT)
@@ -55,8 +55,8 @@ class Plugin
         // add capabilities to administrator role (if it exists)
         $role = get_role('administrator');
         if ($role instanceof \WP_User) {
-            $role->add_cap('view_koko_analytics');
-            $role->add_cap('manage_koko_analytics');
+            $role->add_cap('view_pp_analytics');
+            $role->add_cap('manage_pp_analytics');
         }
 
         // schedule action for aggregating stats
@@ -69,17 +69,17 @@ class Plugin
 
     public function maybe_run_db_migrations(): void
     {
-        $from_version = get_option('koko_analytics_version', '0.0.0');
-        $to_version   = KOKO_ANALYTICS_VERSION;
+        $from_version = get_option('pp_analytics_version', '0.0.0');
+        $to_version   = pp_analytics_VERSION;
         if (\version_compare($from_version, $to_version, '>=')) {
             return;
         }
 
         // run upgrade migrations (if any)
-        $migrations_dir = KOKO_ANALYTICS_PLUGIN_DIR . '/migrations/';
+        $migrations_dir = pp_analytics_PLUGIN_DIR . '/migrations/';
         $migrations = new Migrations($from_version, $to_version, $migrations_dir);
         $migrations->run();
-        update_option('koko_analytics_version', $to_version, true);
+        update_option('pp_analytics_version', $to_version, true);
 
         // make sure scheduled event is set up correctly
         $this->aggregator->setup_scheduled_event();

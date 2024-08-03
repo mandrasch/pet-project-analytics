@@ -6,7 +6,7 @@ add_action('admin_init', function () {
         return;
     }
 
-    // add "view_koko_analytics" capability to "editor" role
+    // add "view_pp_analytics" capability to "editor" role
     $role = get_role('editor');
-    $role->add_cap('view_koko_analytics');
+    $role->add_cap('view_pp_analytics');
 });

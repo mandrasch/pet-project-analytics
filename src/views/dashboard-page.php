@@ -15,9 +15,9 @@ $tab = 'dashboard';
 
 use function KokoAnalytics\fmt_large_number;
 ?>
-<script src="<?php echo plugins_url('assets/dist/js/dashboard.js', KOKO_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo KOKO_ANALYTICS_VERSION; ?>" defer></script>
-<?php do_action('koko_analytics_dashboard_print_assets'); ?>
-<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', KOKO_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo KOKO_ANALYTICS_VERSION; ?>">
+<script src="<?php echo plugins_url('assets/dist/js/dashboard.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>" defer></script>
+<?php do_action('pp_analytics_dashboard_print_assets'); ?>
+<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>">
 <div class="wrap">
     <?php $this->maybe_show_adblocker_notice(); ?>
 
@@ -141,7 +141,7 @@ use function KokoAnalytics\fmt_large_number;
             </div>
         </div>
 
-        <?php do_action('koko_analytics_show_dashboard_components'); ?>
+        <?php do_action('pp_analytics_show_dashboard_components'); ?>
     </div>
 
     <div class="ka-margin-s" style="text-align: right">
@@ -150,5 +150,5 @@ use function KokoAnalytics\fmt_large_number;
 </div>
 
 <script>
-var koko_analytics = <?php echo json_encode($this->get_script_data($dateStart, $dateEnd)); ?>;
+var pp_analytics = <?php echo json_encode($this->get_script_data($dateStart, $dateEnd)); ?>;
 </script>

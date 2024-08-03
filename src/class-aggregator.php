@@ -14,7 +14,7 @@ class Aggregator
 {
     public function __construct()
     {
-        add_action('koko_analytics_aggregate_stats', array($this, 'aggregate'), 10, 0);
+        add_action('pp_analytics_aggregate_stats', array($this, 'aggregate'), 10, 0);
         add_filter('cron_schedules', array($this, 'add_interval'), 10, 1);
         add_action('init', array($this, 'maybe_setup_scheduled_event'), 10, 0);
     }
@@ -24,7 +24,7 @@ class Aggregator
      */
     public function add_interval($intervals): array
     {
-        $intervals['koko_analytics_stats_aggregate_interval'] = array(
+        $intervals['pp_analytics_stats_aggregate_interval'] = array(
             'interval' => 60, // 60 seconds
             'display'  => esc_html__('Every minute', 'koko-analytics'),
         );
@@ -33,8 +33,8 @@ class Aggregator
 
     public function setup_scheduled_event(): void
     {
-        if (! wp_next_scheduled('koko_analytics_aggregate_stats')) {
-            wp_schedule_event(time() + 60, 'koko_analytics_stats_aggregate_interval', 'koko_analytics_aggregate_stats');
+        if (! wp_next_scheduled('pp_analytics_aggregate_stats')) {
+            wp_schedule_event(time() + 60, 'pp_analytics_stats_aggregate_interval', 'pp_analytics_aggregate_stats');
         }
     }
 
@@ -54,7 +54,7 @@ class Aggregator
      */
     public function aggregate(): void
     {
-        update_option('koko_analytics_last_aggregation_at', time(), true);
+        update_option('pp_analytics_last_aggregation_at', time(), true);
 
         // init pageview aggregator
         $pageview_aggregator = new Pageview_Aggregator();
@@ -101,7 +101,7 @@ class Aggregator
             $pageview_aggregator->line($type, $params);
 
             // add-on aggregators
-            do_action('koko_analytics_aggregate_line', $type, $params);
+            do_action('pp_analytics_aggregate_line', $type, $params);
         }
 
         // close file & remove it from filesystem
@@ -110,6 +110,6 @@ class Aggregator
 
         // tell aggregators to write their results to the database
         $pageview_aggregator->finish();
-        do_action('koko_analytics_aggregate_finish');
+        do_action('pp_analytics_aggregate_finish');
     }
 }

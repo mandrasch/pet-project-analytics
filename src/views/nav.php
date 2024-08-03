@@ -3,7 +3,7 @@
 * @var string $tab
 */
 ?>
-<?php if (current_user_can('manage_koko_analytics')) { ?>
+<?php if (current_user_can('manage_pp_analytics')) { ?>
 <div class="ka-admin-nav">
     <?php if ($tab === 'dashboard') { ?>
         <?php if (isset($_GET['koko-analytics-dashboard'])) { ?>

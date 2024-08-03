@@ -20,7 +20,7 @@ class Widget_Most_Viewed_Posts extends WP_Widget
             'customize_selective_refresh' => true,
         );
         parent::__construct('koko-analytics-most-viewed-posts', 'Koko Analytics: ' . esc_html__('Most viewed posts', 'koko-analytics'), $widget_ops);
-        $this->alt_option_name = 'widget_koko_analytics_most_viewed_posts';
+        $this->alt_option_name = 'widget_pp_analytics_most_viewed_posts';
     }
 
     private function get_default_settings()

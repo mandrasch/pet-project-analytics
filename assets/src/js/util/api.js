@@ -1,4 +1,4 @@
-const {nonce, root} = window.koko_analytics
+const {nonce, root} = window.pp_analytics
 /**
  *
  * @param {string} path

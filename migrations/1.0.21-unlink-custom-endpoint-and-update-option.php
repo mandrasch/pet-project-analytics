@@ -7,4 +7,4 @@
 @unlink(ABSPATH . '/koko-analytics-collect.php');
 
 // Update option that says to use custom endpoint, this will be recalculated the next time logic for custom endpoint runs
-update_option('koko_analytics_use_custom_endpoint', false);
+update_option('pp_analytics_use_custom_endpoint', false);

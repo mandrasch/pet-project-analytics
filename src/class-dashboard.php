@@ -22,7 +22,7 @@ class Dashboard
         }
 
         $settings = get_settings();
-        if (!$settings['is_dashboard_public'] && !current_user_can('view_koko_analytics')) {
+        if (!$settings['is_dashboard_public'] && !current_user_can('view_pp_analytics')) {
             return;
         }
 
@@ -54,14 +54,14 @@ class Dashboard
     private function get_script_data(\DateTimeInterface $dateStart, \DateTimeInterface $dateEnd): array
     {
         $stats = new Stats();
-        $items_per_page = (int) apply_filters('koko_analytics_items_per_page', 20);
+        $items_per_page = (int) apply_filters('pp_analytics_items_per_page', 20);
         $groupChartBy = 'day';
 
         if ($dateEnd->getTimestamp() - $dateStart->getTimestamp() >= 86400 * 364) {
             $groupChartBy = 'month';
         }
 
-        return apply_filters('koko_analytics_dashboard_script_data', array(
+        return apply_filters('pp_analytics_dashboard_script_data', array(
             'root'             => rest_url(),
             'nonce'            => wp_create_nonce('wp_rest'),
             'items_per_page'   => $items_per_page,
@@ -114,7 +114,7 @@ class Dashboard
                 <?php echo esc_html__('You appear to be using an ad-blocker that has Koko Analytics on its blocklist. Please whitelist this domain in your ad-blocker setting if your dashboard does not seem to be working correctly.', 'koko-analytics'); ?>
             </p>
         </div>
-        <script src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', KOKO_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo KOKO_ANALYTICS_VERSION; ?>" defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
+        <script src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>" defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
         <?php
     }
 }

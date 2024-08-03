@@ -38,7 +38,7 @@ class Rest
                     ),
                 ),
                 'permission_callback' => function () use ($is_dashboard_public) {
-                    return $is_dashboard_public ? true : current_user_can('view_koko_analytics');
+                    return $is_dashboard_public ? true : current_user_can('view_pp_analytics');
                 },
             )
         );
@@ -58,7 +58,7 @@ class Rest
                     ),
                 ),
                 'permission_callback' => function () use ($is_dashboard_public) {
-                    return $is_dashboard_public ? true : current_user_can('view_koko_analytics');
+                    return $is_dashboard_public ? true : current_user_can('view_pp_analytics');
                 },
             )
         );
@@ -78,7 +78,7 @@ class Rest
                     ),
                 ),
                 'permission_callback' => function () use ($is_dashboard_public) {
-                    return $is_dashboard_public ? true : current_user_can('view_koko_analytics');
+                    return $is_dashboard_public ? true : current_user_can('view_pp_analytics');
                 },
             )
         );
@@ -98,7 +98,7 @@ class Rest
                     ),
                 ),
                 'permission_callback' => function () use ($is_dashboard_public) {
-                    return $is_dashboard_public ? true : current_user_can('view_koko_analytics');
+                    return $is_dashboard_public ? true : current_user_can('view_pp_analytics');
                 },
             )
         );
@@ -115,7 +115,7 @@ class Rest
                     ),
                 ),
                 'permission_callback' => function () use ($is_dashboard_public) {
-                    return $is_dashboard_public ? true : current_user_can('view_koko_analytics');
+                    return $is_dashboard_public ? true : current_user_can('view_pp_analytics');
                 },
             )
         );

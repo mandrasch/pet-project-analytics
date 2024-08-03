@@ -14,8 +14,8 @@ defined('ABSPATH') or exit; ?><!DOCTYPE html>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Koko Analytics">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <link rel="apple-touch-icon" href="<?php echo plugins_url('assets/dist/img/apple-touch-icon.png', KOKO_ANALYTICS_PLUGIN_FILE); ?>">
-    <link rel="manifest" href="<?php echo plugins_url('assets/dist/manifest.json', KOKO_ANALYTICS_PLUGIN_FILE); ?>" />
+    <link rel="apple-touch-icon" href="<?php echo plugins_url('assets/dist/img/apple-touch-icon.png', pp_analytics_PLUGIN_FILE); ?>">
+    <link rel="manifest" href="<?php echo plugins_url('assets/dist/manifest.json', pp_analytics_PLUGIN_FILE); ?>" />
     <meta name="theme-color" content="#B60205">
 </head>
 <body class="ka-dashboard">
@@ -23,7 +23,7 @@ defined('ABSPATH') or exit; ?><!DOCTYPE html>
     <script>
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register(
-            '<?php echo plugins_url('assets/dist/js/sw.js', KOKO_ANALYTICS_PLUGIN_FILE); ?>'
+            '<?php echo plugins_url('assets/dist/js/sw.js', pp_analytics_PLUGIN_FILE); ?>'
         );
     }
     </script>

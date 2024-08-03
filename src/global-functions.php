@@ -31,7 +31,7 @@ function koko_analyics_tracking_script(): void
  * @return array
  * @since 1.1
  */
-function koko_analytics_get_most_viewed_posts(array $args = array()): array
+function pp_analytics_get_most_viewed_posts(array $args = array()): array
 {
     return KokoAnalytics\get_most_viewed_posts($args);
 }
@@ -42,21 +42,21 @@ function koko_analytics_get_most_viewed_posts(array $args = array()): array
  * Does not work with timestamps over 1 hour ago.
  *
  * Examples:
- *  koko_analytics_get_realtime_pageview_count('-5 minutes');
- *  koko_analytics_get_realtime_pageview_count('-1 hour');
+ *  pp_analytics_get_realtime_pageview_count('-5 minutes');
+ *  pp_analytics_get_realtime_pageview_count('-1 hour');
  *
  * @since 1.1
  * @param null|string|int $since An integer timestamp (seconds since Unix epoch) or a relative time string in the format that strtotime() understands. Defaults to "-5 minutes"
  * @return int
  * @see strtotime
  */
-function koko_analytics_get_realtime_pageview_count($since = '-5 minutes'): int
+function pp_analytics_get_realtime_pageview_count($since = '-5 minutes'): int
 {
     return KokoAnalytics\get_realtime_pageview_count($since);
 }
 
 /**
- * Writes a new pageview to the buffer file, to be aggregated during the next time `koko_analytics_aggregate_stats` runs.
+ * Writes a new pageview to the buffer file, to be aggregated during the next time `pp_analytics_aggregate_stats` runs.
  *
  * @param int $post_id The post ID to increment the pageviews count for.
  * @param bool $new_visitor Whether this is a new site visitor.
@@ -65,7 +65,7 @@ function koko_analytics_get_realtime_pageview_count($since = '-5 minutes'): int
  * @return bool
  * @since 1.1
  */
-function koko_analytics_track_pageview(int $post_id, bool $new_visitor = false, bool $unique_pageview = false, string $referrer_url = ''): bool
+function pp_analytics_track_pageview(int $post_id, bool $new_visitor = false, bool $unique_pageview = false, string $referrer_url = ''): bool
 {
     $data = array(
         'p',

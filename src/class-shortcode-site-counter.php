@@ -18,7 +18,7 @@ namespace KokoAnalytics;
 
 class ShortCode_Site_Counter
 {
-    const SHORTCODE = 'koko_analytics_counter';
+    const SHORTCODE = 'pp_analytics_counter';
 
     public function __construct()
     {

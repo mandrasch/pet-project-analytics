@@ -5,8 +5,8 @@ require __DIR__ . '/functions.php';
 
 global $wpdb;
 
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}koko_analytics_bench_referrer_urls");
-$wpdb->query("CREATE TABLE {$wpdb->prefix}koko_analytics_bench_referrer_urls (
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_bench_referrer_urls");
+$wpdb->query("CREATE TABLE {$wpdb->prefix}pp_analytics_bench_referrer_urls (
    id BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
    url VARCHAR(255) NOT NULL,
    UNIQUE INDEX (url)
@@ -28,7 +28,7 @@ $all_urls = array_merge($existing_urls, $new_urls);
 $values = array_merge($existing_urls, $unrelated_urls);
 $placeholders = array_fill(0, count($values), '(%s)');
 $placeholders = join(',', $placeholders);
-$seed_sql = $wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_bench_referrer_urls(url) VALUES {$placeholders}", $values);
+$seed_sql = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_bench_referrer_urls(url) VALUES {$placeholders}", $values);
 $wpdb->query($seed_sql);
 
 
@@ -37,7 +37,7 @@ $total_time = 0;
 $time = bench(function() use($wpdb, $all_urls) {
 	$placeholders = array_fill(0, count($all_urls), '(%s)');
 	$placeholders = join(',', $placeholders);
-	$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_bench_referrer_urls(url) VALUES {$placeholders} ON DUPLICATE KEY UPDATE url = url", $all_urls));
+	$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_bench_referrer_urls(url) VALUES {$placeholders} ON DUPLICATE KEY UPDATE url = url", $all_urls));
 }, 1);
 $total_time += $time;
 printf("Inserting rows while ignoring duplicates took: %.4f seconds" . PHP_EOL, $time);
@@ -46,7 +46,7 @@ printf("Inserting rows while ignoring duplicates took: %.4f seconds" . PHP_EOL, 
 $time = bench(function() use($wpdb, $all_urls) {
 	$placeholders = array_fill(0, count($all_urls), '%s');
 	$placeholders = join(',', $placeholders);
-	$urls = $wpdb->get_results($wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}koko_analytics_bench_referrer_urls WHERE url IN({$placeholders})", $all_urls));
+	$urls = $wpdb->get_results($wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}pp_analytics_bench_referrer_urls WHERE url IN({$placeholders})", $all_urls));
 }, 3);
 $total_time += $time;
 printf("Selecting all rows took %.4f seconds" . PHP_EOL, $time);
@@ -54,7 +54,7 @@ printf("Total time spent: %.4f seconds" . PHP_EOL, $total_time);
 
 // Between benches: Empty table
 echo PHP_EOL;
-$wpdb->query("TRUNCATE {$wpdb->prefix}koko_analytics_bench_referrer_urls");
+$wpdb->query("TRUNCATE {$wpdb->prefix}pp_analytics_bench_referrer_urls");
 $wpdb->query($seed_sql);
 
 // Bench 2.1: Select all URL's already in table so we can ignore duplicates
@@ -62,7 +62,7 @@ $total_time = 0;
 $time = bench(function() use($wpdb, $all_urls) {
 	$placeholders = array_fill(0, count($all_urls), '%s');
 	$placeholders = join(',', $placeholders);
-	$results = $wpdb->get_results($wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}koko_analytics_bench_referrer_urls WHERE url IN({$placeholders})", $all_urls));
+	$results = $wpdb->get_results($wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}pp_analytics_bench_referrer_urls WHERE url IN({$placeholders})", $all_urls));
 
 	$existing_urls = [];
 	foreach($results as $r) {
@@ -83,7 +83,7 @@ $time = bench(function() use($wpdb, $new_urls) {
 	$values = $new_urls;
 	$placeholders = array_fill(0, count($new_urls), '(%s)');
 	$placeholders = join(',', $placeholders);
-	$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_bench_referrer_urls(url) VALUES {$placeholders}", $values));
+	$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_bench_referrer_urls(url) VALUES {$placeholders}", $values));
 }, 1);
 $total_time += $time;
 printf("Inserting only new rows took %.4f seconds" . PHP_EOL, $time);

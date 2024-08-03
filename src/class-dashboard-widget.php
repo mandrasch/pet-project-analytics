@@ -18,7 +18,7 @@ class Dashboard_Widget
     public function register_dashboard_widget(): void
     {
         // only show if user can view stats
-        if (!current_user_can('view_koko_analytics')) {
+        if (!current_user_can('view_pp_analytics')) {
             return;
         }
 
@@ -47,7 +47,7 @@ class Dashboard_Widget
 
     public function dashboard_widget(): void
     {
-        $number_of_top_items = (int) apply_filters('koko_analytics_dashboard_widget_number_of_top_items', 5);
+        $number_of_top_items = (int) apply_filters('pp_analytics_dashboard_widget_number_of_top_items', 5);
         $stats = new Stats();
         $dateToday = create_local_datetime('today, midnight')->format('Y-m-d');
         $realtime = get_realtime_pageview_count('-1 hour');

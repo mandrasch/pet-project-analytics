@@ -88,7 +88,7 @@ class Pageview_Aggregator
         $date = create_local_datetime('now')->format('Y-m-d');
 
         // insert site stats
-        $sql = $wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_site_stats(date, visitors, pageviews) VALUES(%s, %d, %d) ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", array( $date, $this->site_stats['visitors'], $this->site_stats['pageviews'] ));
+        $sql = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_site_stats(date, visitors, pageviews) VALUES(%s, %d, %d) ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", array( $date, $this->site_stats['visitors'], $this->site_stats['pageviews'] ));
         $wpdb->query($sql);
 
         // insert post stats
@@ -98,7 +98,7 @@ class Pageview_Aggregator
                 array_push($values, $date, $post_id, $s['visitors'], $s['pageviews']);
             }
             $placeholders = rtrim(str_repeat('(%s,%d,%d,%d),', count($this->post_stats)), ',');
-            $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_post_stats(date, id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", $values);
+            $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_post_stats(date, id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", $values);
             $wpdb->query($sql);
         }
 
@@ -106,7 +106,7 @@ class Pageview_Aggregator
             // retrieve ID's for known referrer urls
             $referrer_urls = array_keys($this->referrer_stats);
             $placeholders  = rtrim(str_repeat('%s,', count($referrer_urls)), ',');
-            $sql           = $wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}koko_analytics_referrer_urls r WHERE r.url IN({$placeholders})", $referrer_urls);
+            $sql           = $wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}pp_analytics_referrer_urls r WHERE r.url IN({$placeholders})", $referrer_urls);
             $results       = $wpdb->get_results($sql);
             foreach ($results as $r) {
                 $this->referrer_stats[ $r->url ]['id'] = $r->id;
@@ -124,7 +124,7 @@ class Pageview_Aggregator
             if (count($new_referrer_urls) > 0) {
                 $values       = $new_referrer_urls;
                 $placeholders = rtrim(str_repeat('(%s),', count($values)), ',');
-                $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_referrer_urls(url) VALUES {$placeholders}", $values);
+                $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_referrer_urls(url) VALUES {$placeholders}", $values);
                 $wpdb->query($sql);
                 $last_insert_id = $wpdb->insert_id;
                 foreach (array_reverse($values) as $url) {
@@ -138,7 +138,7 @@ class Pageview_Aggregator
                 array_push($values, $date, $r['id'], $r['visitors'], $r['pageviews']);
             }
             $placeholders = rtrim(str_repeat('(%s,%d,%d,%d),', count($this->referrer_stats)), ',');
-            $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_referrer_stats(date, id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", $values);
+            $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_referrer_stats(date, id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", $values);
             $wpdb->query($sql);
         }
 
@@ -155,7 +155,7 @@ class Pageview_Aggregator
 
     private function update_realtime_pageview_count(int $pageviews)
     {
-        $counts       = (array) get_option('koko_analytics_realtime_pageview_count', array());
+        $counts       = (array) get_option('pp_analytics_realtime_pageview_count', array());
         $one_hour_ago = strtotime('-60 minutes');
 
         foreach ($counts as $timestamp => $count) {
@@ -167,7 +167,7 @@ class Pageview_Aggregator
 
         // add pageviews for this minute
         $counts[ (string) time() ] = $pageviews;
-        update_option('koko_analytics_realtime_pageview_count', $counts, false);
+        update_option('pp_analytics_realtime_pageview_count', $counts, false);
     }
 
     private function ignore_referrer_url(string $url)
@@ -175,11 +175,11 @@ class Pageview_Aggregator
         // read blocklist into array
         static $blocklist = null;
         if ($blocklist === null) {
-            $blocklist = file(KOKO_ANALYTICS_PLUGIN_DIR . '/data/referrer-blocklist', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            $blocklist = file(pp_analytics_PLUGIN_DIR . '/data/referrer-blocklist', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
             // add result of filter hook to blocklist so user can provide custom domains to block through simple array
             // @see https://github.com/ibericode/koko-analytics/blob/master/code-snippets/add-domains-to-referrer-blocklist.php
-            $custom_blocklist = apply_filters('koko_analytics_referrer_blocklist', array());
+            $custom_blocklist = apply_filters('pp_analytics_referrer_blocklist', array());
             $blocklist        = array_merge($blocklist, $custom_blocklist);
         }
 
@@ -191,7 +191,7 @@ class Pageview_Aggregator
 
         // run return value through filter so user can apply more advanced logic to determine whether to ignore referrer  url
         // @see https://github.com/ibericode/koko-analytics/blob/master/code-snippets/ignore-some-referrer-traffic-using-regex.php
-        return apply_filters('koko_analytics_ignore_referrer_url', false, $url);
+        return apply_filters('pp_analytics_ignore_referrer_url', false, $url);
     }
 
     public function clean_url(string $url)
@@ -248,7 +248,7 @@ class Pageview_Aggregator
             '/^https?:\/\/(?:[a-z0-9]+\.?)*\.sendib(?:m|t)[0-9].com(?:.*)/' => 'https://www.brevo.com',
         );
 
-        $aggregations = apply_filters('koko_analytics_url_aggregations', $aggregations);
+        $aggregations = apply_filters('pp_analytics_url_aggregations', $aggregations);
 
         return preg_replace(array_keys($aggregations), array_values($aggregations), $url, 1);
     }

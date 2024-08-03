@@ -2,7 +2,7 @@ import { eventListenersModule, attributesModule, init, h } from "snabbdom"
 import { request } from '../util/api.js'
 import { magnitude, formatLargeNumber } from '../util/numbers.js'
 import { format, parseISO8601 } from '../util/dates.js'
-const {i18n} = window.koko_analytics;
+const {i18n} = window.pp_analytics;
 const patch = init([eventListenersModule, attributesModule])
 const tooltip = createTooltip()
 

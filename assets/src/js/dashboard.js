@@ -4,7 +4,7 @@ import Datepicker from './components/datepicker.js'
 import Totals from './components/totals.js'
 import { PostsComponent, ReferrersComponent } from './components/block-components.js'
 import { parseISO8601, toISO8601 } from './util/dates.js'
-let { startDate, endDate, data } = window.koko_analytics
+let { startDate, endDate, data } = window.pp_analytics
 let page = 0;
 let pageFilterEl = document.querySelector('.ka-page-filter');
 
@@ -45,7 +45,7 @@ function registerDashboardComponent(c) {
   blockComponents.push(c)
 }
 
-window.koko_analytics.registerDashboardComponent = registerDashboardComponent;
+window.pp_analytics.registerDashboardComponent = registerDashboardComponent;
 
 // every 1m, update all components with fresh data
 // if we're looking at a date range involving today

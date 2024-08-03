@@ -1,6 +1,6 @@
 import { attributesModule, eventListenersModule, init, h } from "snabbdom";
 import {request} from '../util/api.js'
-const limit = window.koko_analytics.items_per_page;
+const limit = window.pp_analytics.items_per_page;
 const patch = init([attributesModule, eventListenersModule]);
 
 /**

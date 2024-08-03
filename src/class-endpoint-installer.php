@@ -18,7 +18,7 @@ class Endpoint_Installer
     public function get_file_contents(): string
     {
         $buffer_filename    = get_buffer_filename();
-        $functions_filename = KOKO_ANALYTICS_PLUGIN_DIR . '/src/functions.php';
+        $functions_filename = pp_analytics_PLUGIN_DIR . '/src/functions.php';
         return <<<EOT
 <?php
 /**
@@ -30,7 +30,7 @@ class Endpoint_Installer
  */
 
 // path to pageviews.php file in uploads directory
-define('KOKO_ANALYTICS_BUFFER_FILE', '$buffer_filename');
+define('pp_analytics_BUFFER_FILE', '$buffer_filename');
 
 // path to functions.php file in Koko Analytics plugin directory
 require '$functions_filename';
@@ -43,7 +43,7 @@ EOT;
     public function verify(): bool
     {
         $works = $this->verify_internal();
-        update_option('koko_analytics_use_custom_endpoint', $works, true);
+        update_option('pp_analytics_use_custom_endpoint', $works, true);
         return $works;
     }
 
@@ -68,8 +68,8 @@ EOT;
     {
         /* If we made it this far we ideally want to use the custom endpoint file */
         /* Therefore we schedule a recurring health check event to periodically re-attempt and re-test */
-        if (! wp_next_scheduled('koko_analytics_test_custom_endpoint')) {
-            wp_schedule_event(time() + HOUR_IN_SECONDS, 'hourly', 'koko_analytics_test_custom_endpoint');
+        if (! wp_next_scheduled('pp_analytics_test_custom_endpoint')) {
+            wp_schedule_event(time() + HOUR_IN_SECONDS, 'hourly', 'pp_analytics_test_custom_endpoint');
         }
 
         /* Check if path to buffer file changed */
@@ -107,8 +107,8 @@ EOT;
             return false;
         }
 
-        /* Do nothing if KOKO_ANALYTICS_CUSTOM_ENDPOINT is defined (means users disabled this feature or is using their own version of it) */
-        if (defined('KOKO_ANALYTICS_CUSTOM_ENDPOINT')) {
+        /* Do nothing if pp_analytics_CUSTOM_ENDPOINT is defined (means users disabled this feature or is using their own version of it) */
+        if (defined('pp_analytics_CUSTOM_ENDPOINT')) {
             return false;
         }
 

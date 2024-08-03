@@ -7,4 +7,4 @@ if (matches && matches.length === 3) {
   postId = matches.pop()
 }
 
-window.koko_analytics.trackPageview(postId)
+window.pp_analytics.trackPageview(postId)

@@ -1,6 +1,6 @@
 import Chart from './components/chart.js'
 const el = document.getElementById('koko-analytics-dashboard-widget-mount')
-const {data, startDate, endDate} = window.koko_analytics;
+const {data, startDate, endDate} = window.pp_analytics;
 
 function maybeRender() {
   if (!el.clientWidth) {

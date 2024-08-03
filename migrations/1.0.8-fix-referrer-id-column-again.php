@@ -6,7 +6,7 @@ defined('ABSPATH') or exit;
 // unless we set it to a higher value than the max value in the table
 /** @var WPDB $wpdb */
 global $wpdb;
-$max_id = (int) $wpdb->get_var("SELECT MAX(id) FROM  {$wpdb->prefix}koko_analytics_referrer_urls");
+$max_id = (int) $wpdb->get_var("SELECT MAX(id) FROM  {$wpdb->prefix}pp_analytics_referrer_urls");
 $max_id++;
-$query = $wpdb->prepare("ALTER TABLE {$wpdb->prefix}koko_analytics_referrer_urls AUTO_INCREMENT = %d, MODIFY id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT", $max_id);
+$query = $wpdb->prepare("ALTER TABLE {$wpdb->prefix}pp_analytics_referrer_urls AUTO_INCREMENT = %d, MODIFY id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT", $max_id);
 $wpdb->query($query);

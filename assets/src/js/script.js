@@ -10,10 +10,10 @@ var win = window;
 var nav = navigator;
 var enc = encodeURIComponent;
 var loc = win.location;
-var ka = "koko_analytics";
+var ka = "pp_analytics";
 
 function getPagesViewed() {
-  var m = doc.cookie.match(/_koko_analytics_pages_viewed=([^;]+)/);
+  var m = doc.cookie.match(/_pp_analytics_pages_viewed=([^;]+)/);
   return m ? m.pop().split('a') : [];
 }
 

@@ -10,7 +10,7 @@ namespace KokoAnalytics;
 
 class Shortcode_Most_Viewed_Posts
 {
-    private const SHORTCODE = 'koko_analytics_most_viewed_posts';
+    private const SHORTCODE = 'pp_analytics_most_viewed_posts';
 
     public function __construct()
     {

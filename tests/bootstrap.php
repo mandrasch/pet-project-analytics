@@ -2,7 +2,7 @@
 
 require __DIR__ . '/../autoload.php';
 
-define('KOKO_ANALYTICS_PLUGIN_FILE', '../koko-analytics.php');
+define('pp_analytics_PLUGIN_FILE', '../koko-analytics.php');
 
 function apply_filters($a, $b, $prio = 10, $args = 2) {
 	return $b;

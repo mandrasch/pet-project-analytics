@@ -5,10 +5,10 @@ defined('ABSPATH') or exit;
 global $wpdb;
 
 $wpdb->query(
-    "DROP TABLE IF EXISTS {$wpdb->prefix}koko_analytics_dates"
+    "DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_dates"
 );
 $wpdb->query(
-    "CREATE TABLE {$wpdb->prefix}koko_analytics_dates (
+    "CREATE TABLE {$wpdb->prefix}pp_analytics_dates (
 		date DATE PRIMARY KEY NOT NULL
 	) ENGINE=INNODB CHARACTER SET=ascii"
 );
@@ -22,10 +22,10 @@ while ($date < $end) {
 
     if (count($values) === 365) {
         $placeholders = rtrim(str_repeat('(%s),', count($values)), ',');
-        $wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_dates(date) VALUES {$placeholders}", $values));
+        $wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_dates(date) VALUES {$placeholders}", $values));
         $values = array();
     }
 }
 
 $placeholders = rtrim(str_repeat('(%s),', count($values)), ',');
-$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}koko_analytics_dates(date) VALUES {$placeholders}", $values));
+$wpdb->query($wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_dates(date) VALUES {$placeholders}", $values));
