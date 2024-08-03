@@ -51,4 +51,4 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 
 ## License
 
-This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of the [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/)
+This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/) by [Danny van Kooten](https://github.com/dannyvankooten).
