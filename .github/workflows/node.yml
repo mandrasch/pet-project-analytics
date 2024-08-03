@@ -17,6 +17,8 @@ jobs:
 
     - name: Install NPM dependencies
       run: npm ci
+      working-directory: wp-content/plugins/pet-project-analytics/
 
     - name: Run lint
       run: npm run lint
+      working-directory: wp-content/plugins/pet-project-analytics/
