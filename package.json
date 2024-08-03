@@ -1,0 +1,37 @@
+{
+	"name": "koko-analytics",
+	"description": "Privacy-friendly analytics for your WordPress site",
+	"scripts": {
+		"test": "node --experimental-default-type=module assets/src/js/util/numbers.test.js",
+		"build": "webpack --mode=production",
+		"watch": "webpack --mode=development --watch",
+		"download-referrer-blocklist": "curl https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt -k -o data/referrer-blocklist",
+		"create-pot": "wp i18n make-pot .",
+		"lint": "eslint assets/src/js/*.js"
+	},
+	"private": true,
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ibericode/koko-analytics.git"
+	},
+	"keywords": [
+		"wordpress"
+	],
+	"author": "Danny van Kooten",
+	"license": "GPL-3.0-or-later",
+	"bugs": {
+		"url": "https://github.com/ibericode/koko-analytics/issues"
+	},
+	"homepage": "https://github.com/ibericode/koko-analytics#readme",
+	"dependencies": {
+		"snabbdom": "^3.5.1"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.5.0",
+		"copy-webpack-plugin": "^11.0.0",
+		"eslint": "^9.5.0",
+		"globals": "^15.6.0",
+		"webpack": "^5.91.0",
+		"webpack-cli": "^5.1.4"
+	}
+}
