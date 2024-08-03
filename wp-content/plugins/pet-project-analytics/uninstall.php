@@ -13,7 +13,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) die;
 
 // delete wp-options
 delete_option("pp_analytics_settings");
-delete_option("pp_analytics_version");
+delete_option("PP_ANALYTICS_VERSION");
 delete_option("pp_analytics_use_custom_endpoint");
 delete_option("pp_analytics_realtime_pageview_count");
 

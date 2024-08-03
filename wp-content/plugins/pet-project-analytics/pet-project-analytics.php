@@ -3,7 +3,7 @@
 /*
 Plugin Name: Pet Project Analytics
 Plugin URI:
-Version: 1.3.10
+Version: 1.0.0
 Description: Privacy-friendly analytics for your pet projects, easily within WordPress.
 Author: mandrasch
 Author URI: https://mandrasch.dev
@@ -38,7 +38,7 @@ phpcs:disable PSR1.Files.SideEffects
 
 namespace PetProjectAnalytics;
 
-\define('pp_analytics_VERSION', '1.3.10');
+\define('PP_ANALYTICS_VERSION', '1.0.0');
 \define('pp_analytics_PLUGIN_FILE', __FILE__);
 \define('pp_analytics_PLUGIN_DIR', __DIR__);
 

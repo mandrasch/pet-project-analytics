@@ -114,7 +114,7 @@ class Dashboard
                 <?php echo esc_html__('You appear to be using an ad-blocker that has Koko Analytics on its blocklist. Please whitelist this domain in your ad-blocker setting if your dashboard does not seem to be working correctly.', 'koko-analytics'); ?>
             </p>
         </div>
-        <script src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>" defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
+        <script src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>" defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
         <?php
     }
 }

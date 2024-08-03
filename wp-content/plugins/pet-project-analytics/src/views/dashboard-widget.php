@@ -11,8 +11,8 @@
 */
 
 ?>
-<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>">
-<script src="<?php echo plugins_url('assets/dist/js/dashboard-widget.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>" defer></script>
+<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>">
+<script src="<?php echo plugins_url('assets/dist/js/dashboard-widget.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>" defer></script>
 
 <div id="ka-dashboard-widget-realtime">
     <h3><?php echo esc_html__('Realtime', 'koko-analytics'); ?></h3>

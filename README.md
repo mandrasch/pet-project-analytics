@@ -31,6 +31,12 @@ ddev wp plugin activate pet-project-analytics
 
 If you change CSS/JS, you need to run `ddev npm run build` within `wp-content/plugins/pet-project-analytics` again.
 
+
+### How to update (locally)
+
+- change version in pet-project-analytics.php in php code comments as well in `\define('PP_ANALYTICS_VERSION', '1.3.10');` (current version is stored in wp_options)
+- 
+
 ## License
 
 This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of the [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/)

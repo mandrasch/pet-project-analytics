@@ -15,9 +15,9 @@ $tab = 'dashboard';
 
 use function PetProjectAnalytics\fmt_large_number;
 ?>
-<script src="<?php echo plugins_url('assets/dist/js/dashboard.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>" defer></script>
+<script src="<?php echo plugins_url('assets/dist/js/dashboard.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>" defer></script>
 <?php do_action('pp_analytics_dashboard_print_assets'); ?>
-<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>">
+<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>">
 <div class="wrap">
     <?php $this->maybe_show_adblocker_notice(); ?>
 
