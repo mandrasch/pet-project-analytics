@@ -1,8 +1,8 @@
-# Pet Project Analytics (pp_analytics)
+# Pet Project Analytics
 
 Pet Project Analytics allows you to track pageviews for multiple webpages within WordPress - in a private, cookie-less way. Inspiration were services like Plausible, Fathom Analytics, umami, matomo & co.
 
-🚧 Status: Experimental / use with caution / not intended for live usage yet. 🚧
+🚧 Status: Work in progress / not intended for live usage yet. 🚧
 
 This is a fork of the [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/), a WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten).
 
@@ -31,11 +31,22 @@ ddev wp plugin activate pet-project-analytics
 
 If you change CSS/JS, you need to run `ddev npm run build` within `wp-content/plugins/pet-project-analytics` again.
 
-
-### How to update (locally)
+### How to update plugin version (locally)
 
 - change version in pet-project-analytics.php in php code comments as well in `\define('PP_ANALYTICS_VERSION', '1.3.10');` (current version is stored in wp_options)
-- 
+
+This will run SQL migrations automatically (see `maybe_run_migration`)
+
+## TODOs
+
+- [ ] remove automatic tracking for wordpress site
+- [ ] add Sites screen to add sites (title, domain)
+- [ ] add siteId to all screens showing stats
+- [ ] provide JS tracking script for external sites -> with siteId
+- [ ] remove cookie option
+- [ ] adapt optimized endpoint with buffer file
+- [ ] block request from other domains
+- [ ] give proper credit in PHP code comments (how to do it for GNU?)
 
 ## License
 
