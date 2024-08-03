@@ -46,7 +46,8 @@ namespace PetProjectAnalytics;
 require __DIR__ . '/autoload.php';
 
 if (\defined('DOING_AJAX') && DOING_AJAX) {
-    maybe_collect_request();
+    // TODO: completely remove this, we don't track for WP anymore
+    // maybe_collect_request();
 } elseif (is_admin()) {
     new Admin();
     new Dashboard_Widget();
