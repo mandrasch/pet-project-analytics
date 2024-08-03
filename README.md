@@ -2,9 +2,9 @@
 
 Pet Project Analytics allows you to track pageviews for multiple webpages within WordPress - in a private, cookie-less way. Inspiration were services like Plausible, Fathom Analytics, umami, matomo & co.
 
-🚧 Status: Work in progress / not intended for live usage yet. 🚧
+This is a fork of the [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten).
 
-This is a fork of the [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/), a WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten).
+🚧 Status: Work in progress / not intended for live usage yet. 🚧
 
 ## Local Development
 
