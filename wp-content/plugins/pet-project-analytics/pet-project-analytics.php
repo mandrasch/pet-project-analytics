@@ -50,6 +50,8 @@ if (\defined('DOING_AJAX') && DOING_AJAX) {
     // maybe_collect_request();
 } elseif (is_admin()) {
     new Admin();
+    // our new Sites Management Screen
+    new AdminSiteManagement();
     new Dashboard_Widget();
 } else {
     new Script_Loader();

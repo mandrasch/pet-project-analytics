@@ -6,6 +6,8 @@ require __DIR__ . '/src/global-functions.php';
 spl_autoload_register(function($class) {
     static $classmap = [
         'PetProjectAnalytics\\Admin' => __DIR__ . '/src/class-admin.php',
+        // our own site management
+        'PetProjectAnalytics\\AdminSiteManagement' => __DIR__ . '/src/class-admin-site-management.php',
         'PetProjectAnalytics\\Aggregator' => __DIR__ . '/src/class-aggregator.php',
         'PetProjectAnalytics\\Command' => __DIR__ . '/src/class-command.php',
         'PetProjectAnalytics\\Dashboard' => __DIR__ . '/src/class-dashboard.php',
