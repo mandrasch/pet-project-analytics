@@ -30,7 +30,7 @@ class Admin
 
     public function register_menu(): void
     {
-        add_submenu_page('index.php', esc_html__('Koko Analytics', 'koko-analytics'), esc_html__('Analytics', 'koko-analytics'), 'view_pp_analytics', 'koko-analytics', array($this, 'show_page'));
+        add_submenu_page('index.php', esc_html__('Pet Project Analytics', 'pp-analytics'), esc_html__('Analytics', 'pp-analytics'), 'view_pp_analytics', 'pp-analytics', array($this, 'show_page'));
     }
 
     public function maybe_run_actions(): void
@@ -94,10 +94,10 @@ class Admin
         do_action('pp_analytics_aggregate_stats');
 
         if (false === $this->is_cron_event_working()) {
-            echo '<div class="notice notice-warning inline koko-analytics-cron-warning is-dismissible"><p>';
-            echo esc_html__('There seems to be an issue with your site\'s WP Cron configuration that prevents Koko Analytics from automatically processing your statistics.', 'koko-analytics');
+            echo '<div class="notice notice-warning inline pp-analytics-cron-warning is-dismissible"><p>';
+            echo esc_html__('There seems to be an issue with your site\'s WP Cron configuration that prevents Pet Project Analytics from automatically processing your statistics.', 'pp-analytics');
             echo ' ';
-            echo esc_html__('If you\'re not sure what this is about, please ask your webhost to look into this.', 'koko-analytics');
+            echo esc_html__('If you\'re not sure what this is about, please ask your webhost to look into this.', 'pp-analytics');
             echo '</p></div>';
         }
 
@@ -108,7 +108,7 @@ class Admin
 
         if (false === $is_buffer_dir_writable) {
             echo '<div class="notice notice-warning inline is-dismissible"><p>';
-            echo wp_kses(sprintf(__('Koko Analytics is unable to write to the <code>%s</code> directory. Please update the file permissions so that your web server can write to it.', 'koko-analytics'), $buffer_dirname), array('code' => array()));
+            echo wp_kses(sprintf(__('Pet Project Analytics is unable to write to the <code>%s</code> directory. Please update the file permissions so that your web server can write to it.', 'pp-analytics'), $buffer_dirname), array('code' => array()));
             echo '</p></div>';
         }
 
@@ -138,7 +138,7 @@ class Admin
         add_filter('update_footer', '__return_empty_string');
 
         /* translators: %1$s links to the WordPress.org plugin review page, %2$s links to the admin page for creating a new post */
-        return sprintf(wp_kses(__('If you enjoy using Koko Analytics, please <a href="%1$s">review the plugin on WordPress.org</a> or <a href="%2$s">write about it on your blog</a> to help out.', 'koko-analytics'), array('a' => array('href' => array()))), 'https://wordpress.org/support/view/plugin-reviews/koko-analytics?rate=5#postform', admin_url('post-new.php'));
+        return sprintf(wp_kses(__('If you enjoy using Pet Project Analytics, please <a href="%1$s">review the plugin on WordPress.org</a> or <a href="%2$s">write about it on your blog</a> to help out.', 'pp-analytics'), array('a' => array('href' => array()))), 'https://wordpress.org/support/view/plugin-reviews/pp-analytics?rate=5#postform', admin_url('post-new.php'));
     }
 
 
