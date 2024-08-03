@@ -6,6 +6,7 @@
 # General files
 !.gitignore
 !/README.md
+!/README.orginal.md
 !/LICENSE
 
 # DDEV config
