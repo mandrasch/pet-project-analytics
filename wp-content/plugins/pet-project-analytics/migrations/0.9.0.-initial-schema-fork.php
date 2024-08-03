@@ -4,13 +4,11 @@ defined('ABSPATH') or exit;
 
 global $wpdb;
 
-// This was forked, we added a new _sites table with foreign keys. I tried to gather all changes from migrations here to start fresh
-
-// Drop existing tables if they exist
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_sites");
+// Drop tables in the correct order to avoid foreign key constraint errors
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_referrer_stats");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_site_stats");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_referrer_urls");
-$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_referrer_stats");
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_sites");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_dates");
 
 // Create the updated sites table
