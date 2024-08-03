@@ -19,11 +19,14 @@ jobs:
 
       - name: Validate composer.json and composer.lock
         run: composer validate
+        working-directory: wp-content/plugins/pet-project-analytics/
 
       - name: Get composer cache directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        working-directory: wp-content/plugins/pet-project-analytics/
 
+      # TODO: does it work without working directory setting?
       - name: Cache dependencies
         uses: actions/cache@v2
         with:
@@ -34,9 +37,12 @@ jobs:
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
+        working-directory: wp-content/plugins/pet-project-analytics/
 
       - name: Run PHPUnit
         run: composer run-script test
+        working-directory: wp-content/plugins/pet-project-analytics/
 
       - name: Run PHPCS
         run: composer run-script lint
+        working-directory: wp-content/plugins/pet-project-analytics/
