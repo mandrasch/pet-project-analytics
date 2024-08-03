@@ -24,6 +24,7 @@ function maybe_collect_request()
 
 function extract_pageview_data(): array
 {
+    // TODO: add site id
     // do nothing if a required parameter is missing
     if (
         !isset($_GET['p'])
