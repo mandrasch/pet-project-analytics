@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-use function KokoAnalytics\fmt_large_number;
+use function PetProjectAnalytics\fmt_large_number;
 
 final class FunctionsTest extends TestCase
 {

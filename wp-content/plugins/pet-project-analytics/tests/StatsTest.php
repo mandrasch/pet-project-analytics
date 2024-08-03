@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Stats;
+use PetProjectAnalytics\Stats;
 use PHPUnit\Framework\TestCase;
 
 final class StatsTest extends TestCase

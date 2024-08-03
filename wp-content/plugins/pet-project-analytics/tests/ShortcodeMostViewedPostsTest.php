@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Shortcode_Most_Viewed_Posts;
+use PetProjectAnalytics\Shortcode_Most_Viewed_Posts;
 use PHPUnit\Framework\TestCase;
 
 final class ShortcodeMostViewedPostsTest extends TestCase

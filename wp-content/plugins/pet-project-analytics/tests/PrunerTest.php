@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Pruner;
+use PetProjectAnalytics\Pruner;
 use PHPUnit\Framework\TestCase;
 
 final class PrunerTest extends TestCase

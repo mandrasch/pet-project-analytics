@@ -1,5 +1,5 @@
 {
-	"name": "koko-analytics",
+	"name": "pet-project-analytics",
 	"description": "Privacy-friendly analytics for your WordPress site",
 	"scripts": {
 		"test": "node --experimental-default-type=module assets/src/js/util/numbers.test.js",

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Dashboard_Widget;
+use PetProjectAnalytics\Dashboard_Widget;
 use PHPUnit\Framework\TestCase;
 
 final class DashboardWidgetTest extends TestCase

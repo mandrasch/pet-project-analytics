@@ -283,7 +283,7 @@ You can [purchase Koko Analytics Pro](https://www.kokoanalytics.com/pricing/) to
 - Validate referrer URL and ignore if invalid
 - Delete optimized tracking endpoint if buffer filename changed and is no longer present in it. This fixes an issue when moving between servers
 - Always run database migrations when needed, regardless of current user role
-- Allow specifying multiple post types in `KokoAnalytics\get_most_viewed_posts()` and the `[koko_analytics_most_viewed_posts]` shortcode. Example: `[koko_analytics_most_viewed_posts post_type="page,post"]`
+- Allow specifying multiple post types in `PetProjectAnalytics\get_most_viewed_posts()` and the `[koko_analytics_most_viewed_posts]` shortcode. Example: `[koko_analytics_most_viewed_posts post_type="page,post"]`
 - Limit attempts to install optimized tracking endpoint to once per hour
 - On the analytics dashboard, use the date format from WordPress settings
 - Translate day and month names (only relevant if using M, F, l or D in the date format string)

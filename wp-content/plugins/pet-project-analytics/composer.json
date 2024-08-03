@@ -1,6 +1,6 @@
 {
-  "name": "ibericode/koko-analytics",
-  "description": "Privacy-friendly analytics for your WordPress site",
+  "name": "mandrasch/pet-project-analytics",
+  "description": "Privacy-friendly analytics for your WordPress site, fork of koko-analytics",
   "keywords": [
     "wordpress",
     "analytics",
@@ -10,9 +10,9 @@
   "license": "GPL-3.0-or-later",
   "authors": [
     {
-      "name": "Danny van Kooten",
-      "email": "hi@dannyvankooten.com",
-      "homepage": "https://dannyvankooten.com"
+      "name": "Matthias Andrasch",
+      "email": "matthias-andrasch-kontakt@mailbox.org",
+      "homepage": "https://mandrasch.dev"
     }
   ],
   "type": "wordpress-plugin",

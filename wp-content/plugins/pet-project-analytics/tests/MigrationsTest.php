@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Migrations;
+use PetProjectAnalytics\Migrations;
 use PHPUnit\Framework\TestCase;
 
 class MigrationsTest extends TestCase

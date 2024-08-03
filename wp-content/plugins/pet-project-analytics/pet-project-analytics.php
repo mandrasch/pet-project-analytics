@@ -1,16 +1,20 @@
 <?php
 
 /*
-Plugin Name: Koko Analytics
-Plugin URI: https://www.kokoanalytics.com/#utm_source=wp-plugin&utm_medium=koko-analytics&utm_campaign=plugins-page
+Plugin Name: Pet Project Analytics
+Plugin URI:
 Version: 1.3.10
-Description: Privacy-friendly analytics for your WordPress site.
-Author: ibericode
-Author URI: https://www.ibericode.com/
-Author Email: support@kokoanalytics.com
-Text Domain: koko-analytics
+Description: Privacy-friendly analytics for your pet projects, easily within WordPress.
+Author: mandrasch
+Author URI: https://mandrasch.dev
+Author Email:
+Text Domain: pp-analytics
 License: GPL-3.0
 License URI: https://www.gnu.org/licenses/gpl-3.0.txt
+
+Pet Project Analytics - website analytics plugin for WordPress
+
+This is a fork of
 
 Koko Analytics - website analytics plugin for WordPress
 
@@ -38,7 +42,7 @@ namespace PetProjectAnalytics;
 \define('pp_analytics_PLUGIN_FILE', __FILE__);
 \define('pp_analytics_PLUGIN_DIR', __DIR__);
 
-// Load the Koko Analytics autoloader
+// Load autoloader
 require __DIR__ . '/autoload.php';
 
 if (\defined('DOING_AJAX') && DOING_AJAX) {
@@ -48,7 +52,7 @@ if (\defined('DOING_AJAX') && DOING_AJAX) {
     new Dashboard_Widget();
 } else {
     new Script_Loader();
-    add_action('admin_bar_menu', 'KokoAnalytics\admin_bar_menu', 40, 1);
+    add_action('admin_bar_menu', 'PetProjectAnalytics\admin_bar_menu', 40, 1);
 }
 
 new Dashboard();
@@ -60,8 +64,8 @@ new ShortCode_Site_Counter();
 new Pruner();
 
 if (\class_exists('WP_CLI')) {
-    \WP_CLI::add_command('koko-analytics', 'KokoAnalytics\Command');
+    \WP_CLI::add_command('pp-analytics', 'PetProjectAnalytics\Command');
 }
 
-add_action('widgets_init', 'KokoAnalytics\widgets_init');
-add_action('pp_analytics_test_custom_endpoint', 'KokoAnalytics\test_custom_endpoint');
+add_action('widgets_init', 'PetProjectAnalytics\widgets_init');
+add_action('pp_analytics_test_custom_endpoint', 'PetProjectAnalytics\test_custom_endpoint');

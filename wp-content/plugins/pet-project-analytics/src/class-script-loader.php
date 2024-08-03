@@ -86,13 +86,13 @@ class Script_Loader
 
     private function get_tracker_url(): string
     {
-        if (defined('pp_analytics_CUSTOM_ENDPOINT') && pp_analytics_CUSTOM_ENDPOINT) {
-            return site_url(pp_analytics_CUSTOM_ENDPOINT);
+        if (defined('PP_ANALYTICS_CUSTOM_ENDPOINT') && PP_ANALYTICS_CUSTOM_ENDPOINT) {
+            return site_url(PP_ANALYTICS_CUSTOM_ENDPOINT);
         }
 
         // We should use site_url() here because we place the file in ABSPATH and other plugins may be filtering home_url (eg multilingual plugin)
         // In any case: what we use here should match what we test when creating the optimized endpoint file.
-        return using_custom_endpoint() ? site_url('/koko-analytics-collect.php') : admin_url('admin-ajax.php?action=pp_analytics_collect');
+        return using_custom_endpoint() ? site_url('/pp-analytics-collect.php') : admin_url('admin-ajax.php?action=pp_analytics_collect');
     }
 
     private function get_cookie_path(): string

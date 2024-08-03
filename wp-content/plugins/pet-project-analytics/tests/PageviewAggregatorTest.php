@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Aggregator;
+use PetProjectAnalytics\Aggregator;
 use PHPUnit\Framework\TestCase;
 
 final class PageviewAggregatorTest extends TestCase
 {
     public function test_clean_url() : void
     {
-        $a = new \KokoAnalytics\Pageview_Aggregator();
+        $a = new \PetProjectAnalytics\Pageview_Aggregator();
 
         $tests = [
 			'https://wordpress.org' => 'https://wordpress.org',
@@ -28,7 +28,7 @@ final class PageviewAggregatorTest extends TestCase
 
     public function test_normalize_url() : void
 	{
-		$a = new \KokoAnalytics\Pageview_Aggregator();
+		$a = new \PetProjectAnalytics\Pageview_Aggregator();
 		$tests = [
 			'https://wordpress.org/plugins/koko-analytics/' => 'https://wordpress.org/plugins/koko-analytics/',
 			'https://pinterest.com/pin/foobar' => 'https://pinterest.com/pin/foobar',

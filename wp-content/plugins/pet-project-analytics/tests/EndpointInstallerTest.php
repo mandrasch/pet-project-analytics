@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Endpoint_Installer;
+use PetProjectAnalytics\Endpoint_Installer;
 use PHPUnit\Framework\TestCase;
 
 final class EndpointInstallerTest extends TestCase

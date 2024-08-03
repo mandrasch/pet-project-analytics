@@ -256,7 +256,7 @@ function admin_bar_menu(WP_Admin_Bar $wp_admin_bar)
 function widgets_init()
 {
     require pp_analytics_PLUGIN_DIR . '/src/class-widget-most-viewed-posts.php';
-    register_widget('KokoAnalytics\Widget_Most_Viewed_Posts');
+    register_widget('PetProjectAnalytics\Widget_Most_Viewed_Posts');
 }
 
 /**
@@ -283,8 +283,8 @@ function get_realtime_pageview_count($since = '-5 minutes'): int
 
 function using_custom_endpoint(): bool
 {
-    if (defined('pp_analytics_CUSTOM_ENDPOINT')) {
-        return (bool) pp_analytics_CUSTOM_ENDPOINT;
+    if (defined('PP_ANALYTICS_CUSTOM_ENDPOINT')) {
+        return (bool) PP_ANALYTICS_CUSTOM_ENDPOINT;
     }
 
     return (bool) get_option('pp_analytics_use_custom_endpoint', false);

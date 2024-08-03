@@ -1,10 +1,10 @@
 <?php defined('ABSPATH') or exit;
 /**
- * @var \KokoAnalytics\Admin $this
+ * @var \PetProjectAnalytics\Admin $this
  * @var array $settings
  * @var string $database_size
  * @var array $using_custom_endpoint
- * @var \KokoAnalytics\Endpoint_Installer $endpoint_installer
+ * @var \PetProjectAnalytics\Endpoint_Installer $endpoint_installer
  * @var array $user_roles
  * @var array $date_presets
  */

@@ -1,6 +1,6 @@
 <?php
 
-use KokoAnalytics\Aggregator;
+use PetProjectAnalytics\Aggregator;
 
 require __DIR__ . '/functions.php';
 require __DIR__ . '/../../src/class-aggregator.php';

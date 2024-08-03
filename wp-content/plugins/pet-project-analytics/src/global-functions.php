@@ -15,7 +15,7 @@
  */
 function koko_analyics_tracking_script(): void
 {
-    $script_loader = new KokoAnalytics\Script_Loader();
+    $script_loader = new PetProjectAnalytics\Script_Loader();
     $script_loader->maybe_enqueue_script(true);
 }
 
@@ -33,7 +33,7 @@ function koko_analyics_tracking_script(): void
  */
 function pp_analytics_get_most_viewed_posts(array $args = array()): array
 {
-    return KokoAnalytics\get_most_viewed_posts($args);
+    return PetProjectAnalytics\get_most_viewed_posts($args);
 }
 
 
@@ -52,7 +52,7 @@ function pp_analytics_get_most_viewed_posts(array $args = array()): array
  */
 function pp_analytics_get_realtime_pageview_count($since = '-5 minutes'): int
 {
-    return KokoAnalytics\get_realtime_pageview_count($since);
+    return PetProjectAnalytics\get_realtime_pageview_count($since);
 }
 
 /**
@@ -74,5 +74,5 @@ function pp_analytics_track_pageview(int $post_id, bool $new_visitor = false, bo
         (int) $unique_pageview,
         $referrer_url,
     );
-    return KokoAnalytics\collect_in_file($data);
+    return PetProjectAnalytics\collect_in_file($data);
 }

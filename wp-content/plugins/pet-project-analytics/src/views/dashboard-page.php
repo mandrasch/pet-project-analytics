@@ -2,18 +2,18 @@
 $tab = 'dashboard';
 
 /**
- * @var \KokoAnalytics\Dashboard $this
+ * @var \PetProjectAnalytics\Dashboard $this
  * @var \DateTimeInterface $dateStart
  * @var \DateTimeInterface $dateEnd
  * @var object $totals
  * @var int $realtime
  * @var string $dateFormat
  * @var string $preset
- * @var \KokoAnalytics\Dates $dates
- * @var \KokoAnalytics\Stats $stats
+ * @var \PetProjectAnalytics\Dates $dates
+ * @var \PetProjectAnalytics\Stats $stats
  */
 
-use function KokoAnalytics\fmt_large_number;
+use function PetProjectAnalytics\fmt_large_number;
 ?>
 <script src="<?php echo plugins_url('assets/dist/js/dashboard.js', pp_analytics_PLUGIN_FILE); ?>?v=<?php echo pp_analytics_VERSION; ?>" defer></script>
 <?php do_action('pp_analytics_dashboard_print_assets'); ?>

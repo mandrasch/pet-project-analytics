@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Aggregator;
+use PetProjectAnalytics\Aggregator;
 use PHPUnit\Framework\TestCase;
 
 final class AggregatorTest extends TestCase

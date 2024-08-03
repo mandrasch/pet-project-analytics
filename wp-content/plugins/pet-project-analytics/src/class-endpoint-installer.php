@@ -12,7 +12,7 @@ class Endpoint_Installer
 {
     public function get_file_name(): string
     {
-        return rtrim(ABSPATH, '/') . '/koko-analytics-collect.php';
+        return rtrim(ABSPATH, '/') . '/pp-analytics-collect.php';
     }
 
     public function get_file_contents(): string
@@ -36,7 +36,7 @@ define('pp_analytics_BUFFER_FILE', '$buffer_filename');
 require '$functions_filename';
 
 // function call to collect the request data
-KokoAnalytics\collect_request();
+PetProjectAnalytics\collect_request();
 EOT;
     }
 
@@ -49,7 +49,7 @@ EOT;
 
     private function verify_internal(): bool
     {
-        $tracker_url = site_url('/koko-analytics-collect.php?nv=1&p=0&up=1&test=1');
+        $tracker_url = site_url('/pp-analytics-collect.php?nv=1&p=0&up=1&test=1');
         $response    = wp_remote_get($tracker_url);
         if (is_wp_error($response)) {
             return false;
@@ -77,7 +77,7 @@ EOT;
         if (file_exists($file_name)) {
             $content = file_get_contents($file_name);
             if (strpos($content, get_buffer_filename()) === false) {
-                unlink(ABSPATH . '/koko-analytics-collect.php');
+                unlink(ABSPATH . '/pp-analytics-collect.php');
             }
         }
 
@@ -107,8 +107,8 @@ EOT;
             return false;
         }
 
-        /* Do nothing if pp_analytics_CUSTOM_ENDPOINT is defined (means users disabled this feature or is using their own version of it) */
-        if (defined('pp_analytics_CUSTOM_ENDPOINT')) {
+        /* Do nothing if PP_ANALYTICS_CUSTOM_ENDPOINT is defined (means users disabled this feature or is using their own version of it) */
+        if (defined('PP_ANALYTICS_CUSTOM_ENDPOINT')) {
             return false;
         }
 

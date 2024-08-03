@@ -1,6 +1,6 @@
 <?php
 /**
-* @var KokoAnalytics\Dashboard $this
+* @var PetProjectAnalytics\Dashboard $this
  */
 defined('ABSPATH') or exit; ?><!DOCTYPE html>
 <html lang="<?php bloginfo('language'); ?>">

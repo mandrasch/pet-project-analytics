@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Script_Loader;
+use PetProjectAnalytics\Script_Loader;
 use PHPUnit\Framework\TestCase;
 
 final class ScriptLoaderTest extends TestCase

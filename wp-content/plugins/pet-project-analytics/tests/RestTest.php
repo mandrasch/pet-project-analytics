@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Rest;
+use PetProjectAnalytics\Rest;
 use PHPUnit\Framework\TestCase;
 
 final class RestTest extends TestCase

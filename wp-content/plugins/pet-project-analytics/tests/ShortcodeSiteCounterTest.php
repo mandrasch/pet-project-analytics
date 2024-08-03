@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\ShortCode_Site_Counter;
+use PetProjectAnalytics\ShortCode_Site_Counter;
 use PHPUnit\Framework\TestCase;
 
 final class ShortcodeSiteCounterTest extends TestCase

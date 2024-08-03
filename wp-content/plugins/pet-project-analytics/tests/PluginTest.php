@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Aggregator;
-use KokoAnalytics\Plugin;
+use PetProjectAnalytics\Aggregator;
+use PetProjectAnalytics\Plugin;
 use PHPUnit\Framework\TestCase;
 
 final class PluginTest extends TestCase

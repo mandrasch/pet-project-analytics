@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-use KokoAnalytics\Admin;
+use PetProjectAnalytics\Admin;
 use PHPUnit\Framework\TestCase;
 
 final class AdminTest extends TestCase
