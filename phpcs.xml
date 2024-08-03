@@ -5,7 +5,7 @@
     <file>code-snippets/</file>
     <file>src/</file>
     <file>migrations/</file>
-    <file>koko-analytics.php</file>
+    <file>pp-analytics.php</file>
     <exclude-pattern>*\.(html|css|js)</exclude-pattern>
     <rule ref="PSR12">
         <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />

@@ -14,7 +14,7 @@
  *  global: Set to true to show count for entire site instead of the current page.
  */
 
-namespace KokoAnalytics;
+namespace PetProjectAnalytics;
 
 class ShortCode_Site_Counter
 {

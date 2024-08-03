@@ -6,7 +6,7 @@
  * @author Danny van Kooten
  */
 
-namespace KokoAnalytics;
+namespace PetProjectAnalytics;
 
 use WP_Admin_Bar;
 use WP_Query;

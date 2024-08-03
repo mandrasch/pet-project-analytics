@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 phpcs:disable PSR1.Files.SideEffects
 */
 
-namespace KokoAnalytics;
+namespace PetProjectAnalytics;
 
 \define('pp_analytics_VERSION', '1.3.10');
 \define('pp_analytics_PLUGIN_FILE', __FILE__);

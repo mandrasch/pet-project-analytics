@@ -6,7 +6,7 @@
  * @author Danny van Kooten
  */
 
-namespace KokoAnalytics;
+namespace PetProjectAnalytics;
 
 class Dashboard_Widget
 {
