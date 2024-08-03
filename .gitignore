@@ -1,6 +1,21 @@
-node_modules
-assets/dist
-vendor
-.idea
-.DS_Store
-.php-cs-fixer.cache
+# Ignore all ...
+/*
+
+# ... but track specific files / folders: 
+
+# General files
+!.gitignore
+!/README.md
+!/LICENSE
+
+# DDEV config
+!/.ddev
+/.ddev/*
+!/.ddev/config.yaml
+
+# Plugin:
+!/wp-content
+/wp-content/*
+!/wp-content/plugins
+/wp-content/plugins/*
+!/wp-content/plugins/pet-project-analytics
