@@ -4,7 +4,7 @@
 Plugin Name: Pet Project Analytics
 Plugin URI:
 Version: 0.9.0
-Description: Privacy-friendly analytics for your pet projects, easily within WordPress.
+Description: Privacy-friendly analytics for your pet projects, easily within WordPress. Fork of KokoAnalytics.
 Author: mandrasch
 Author URI: https://mandrasch.dev
 Author Email:
@@ -39,7 +39,7 @@ phpcs:disable PSR1.Files.SideEffects
 namespace PetProjectAnalytics;
 
 \define('PP_ANALYTICS_VERSION', '0.9.0');
-\define('pp_analytics_PLUGIN_FILE', __FILE__);
+\define('PP_ANALYTICS_PLUGIN_FILE', __FILE__);
 \define('pp_analytics_PLUGIN_DIR', __DIR__);
 
 // Load autoloader

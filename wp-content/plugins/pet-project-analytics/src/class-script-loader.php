@@ -58,10 +58,10 @@ class Script_Loader
             }
 
             // Enqueue the actual tracking script (in footer, if possible)
-            wp_enqueue_script('koko-analytics', plugins_url('assets/dist/js/script.js', pp_analytics_PLUGIN_FILE), array(), PP_ANALYTICS_VERSION, true);
+            wp_enqueue_script('koko-analytics', plugins_url('assets/dist/js/script.js', PP_ANALYTICS_PLUGIN_FILE), array(), PP_ANALYTICS_VERSION, true);
         } else {
             $this->print_js_object();
-            echo '<script defer src="', plugins_url(sprintf('assets/dist/js/script.js?ver=%s', PP_ANALYTICS_VERSION), pp_analytics_PLUGIN_FILE), '"></script>';
+            echo '<script defer src="', plugins_url(sprintf('assets/dist/js/script.js?ver=%s', PP_ANALYTICS_VERSION), PP_ANALYTICS_PLUGIN_FILE), '"></script>';
         }
     }
 

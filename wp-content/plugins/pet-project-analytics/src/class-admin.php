@@ -22,7 +22,7 @@ class Admin
 
         // Hooks for plugins overview page
         if ($pagenow === 'plugins.php') {
-            $plugin_basename = plugin_basename(pp_analytics_PLUGIN_FILE);
+            $plugin_basename = plugin_basename(PP_ANALYTICS_PLUGIN_FILE);
             add_filter('plugin_action_links_' . $plugin_basename, array($this, 'add_plugin_settings_link'), 10, 1);
             add_filter('plugin_row_meta', array($this, 'add_plugin_meta_links'), 10, 2);
         }
@@ -87,6 +87,7 @@ class Admin
         add_action('admin_footer_text', array($this, 'footer_text'));
     }
 
+    // TODO: rename
     public function show_dashboard_page(): void
     {
         // aggregate stats whenever this page is requested
@@ -151,7 +152,7 @@ class Admin
      */
     public function add_plugin_settings_link($links): array
     {
-        $settings_link = sprintf('<a href="%s">%s</a>', admin_url('index.php?page=koko-analytics&tab=settings'), esc_html__('Settings', 'koko-analytics'));
+        $settings_link = sprintf('<a href="%s">%s</a>', admin_url('index.php?page=pp-analytics&tab=settings'), esc_html__('Settings', 'pp-analytics'));
         array_unshift($links, $settings_link);
         return $links;
     }
@@ -166,17 +167,12 @@ class Admin
      */
     public function add_plugin_meta_links($links, $file): array
     {
-        if ($file !== plugin_basename(pp_analytics_PLUGIN_FILE)) {
+        if ($file !== plugin_basename(PP_ANALYTICS_PLUGIN_FILE)) {
             return $links;
         }
 
         // add links to documentation
-        $links[] = '<a href="https://www.kokoanalytics.com/kb/">' . esc_html__('Documentation', 'koko-analytics') . '</a>';
-
-        // add link to Pro version, unless already running it
-        if (! \defined('pp_analytics_PRO_VERSION')) {
-            $links[] = '<a href="https://www.kokoanalytics.com/pricing/">' . esc_html__('Koko Analytics Pro', 'koko-analytics') . '</a>';
-        }
+        $links[] = '<a href="https://github.com/mandrasch/pet-project-analytics">' . esc_html__('Documentation', 'pp-analytics') . '</a>';
 
         return $links;
     }

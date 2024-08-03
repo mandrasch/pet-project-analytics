@@ -11,7 +11,7 @@
 $tab          = 'settings';
 $public_dashboard_url = add_query_arg(array('koko-analytics-dashboard' => 1), home_url());
 ?>
-<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', pp_analytics_PLUGIN_FILE); ?>">
+<link rel="stylesheet" href="<?php echo plugins_url('assets/dist/css/dashboard.css', PP_ANALYTICS_PLUGIN_FILE); ?>">
 <div class="wrap" id="koko-analytics-admin">
     <?php require __DIR__ . '/nav.php'; ?>
 

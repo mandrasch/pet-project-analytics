@@ -22,7 +22,7 @@ class Plugin
     {
         $this->aggregator = $aggregator;
 
-        register_activation_hook(pp_analytics_PLUGIN_FILE, array($this, 'on_activation'));
+        register_activation_hook(PP_ANALYTICS_PLUGIN_FILE, array($this, 'on_activation'));
         add_filter('pre_update_option_active_plugins', array($this, 'filter_active_plugins'), 10, 1);
         add_action('init', array($this, 'maybe_run_db_migrations'), 10, 0);
     }
@@ -40,7 +40,7 @@ class Plugin
             return $plugins;
         }
 
-        $pattern = '/' . preg_quote(plugin_basename(pp_analytics_PLUGIN_FILE), '/') . '$/';
+        $pattern = '/' . preg_quote(plugin_basename(PP_ANALYTICS_PLUGIN_FILE), '/') . '$/';
         return array_merge(
             preg_grep($pattern, $plugins),
             preg_grep($pattern, $plugins, PREG_GREP_INVERT)
