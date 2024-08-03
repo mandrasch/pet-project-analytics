@@ -175,7 +175,7 @@ class Pageview_Aggregator
         // read blocklist into array
         static $blocklist = null;
         if ($blocklist === null) {
-            $blocklist = file(pp_analytics_PLUGIN_DIR . '/data/referrer-blocklist', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            $blocklist = file(PP_ANALYTICS_PLUGIN_DIR . '/data/referrer-blocklist', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
             // add result of filter hook to blocklist so user can provide custom domains to block through simple array
             // @see https://github.com/ibericode/koko-analytics/blob/master/code-snippets/add-domains-to-referrer-blocklist.php

@@ -77,7 +77,7 @@ class Plugin
         }
 
         // run upgrade migrations (if any)
-        $migrations_dir = pp_analytics_PLUGIN_DIR . '/migrations/';
+        $migrations_dir = PP_ANALYTICS_PLUGIN_DIR . '/migrations/';
         $migrations = new Migrations($from_version, $to_version, $migrations_dir);
         $migrations->run();
         update_option('PP_ANALYTICS_VERSION', $to_version, true);

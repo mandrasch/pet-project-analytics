@@ -40,7 +40,7 @@ namespace PetProjectAnalytics;
 
 \define('PP_ANALYTICS_VERSION', '0.9.0');
 \define('PP_ANALYTICS_PLUGIN_FILE', __FILE__);
-\define('pp_analytics_PLUGIN_DIR', __DIR__);
+\define('PP_ANALYTICS_PLUGIN_DIR', __DIR__);
 
 // Load autoloader
 require __DIR__ . '/autoload.php';

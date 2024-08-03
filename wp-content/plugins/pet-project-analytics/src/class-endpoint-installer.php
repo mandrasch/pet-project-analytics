@@ -18,7 +18,7 @@ class Endpoint_Installer
     public function get_file_contents(): string
     {
         $buffer_filename    = get_buffer_filename();
-        $functions_filename = pp_analytics_PLUGIN_DIR . '/src/functions.php';
+        $functions_filename = PP_ANALYTICS_PLUGIN_DIR . '/src/functions.php';
         return <<<EOT
 <?php
 /**

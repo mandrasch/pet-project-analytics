@@ -256,7 +256,7 @@ function admin_bar_menu(WP_Admin_Bar $wp_admin_bar)
 
 function widgets_init()
 {
-    require pp_analytics_PLUGIN_DIR . '/src/class-widget-most-viewed-posts.php';
+    require PP_ANALYTICS_PLUGIN_DIR . '/src/class-widget-most-viewed-posts.php';
     register_widget('PetProjectAnalytics\Widget_Most_Viewed_Posts');
 }
 
