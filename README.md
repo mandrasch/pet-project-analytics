@@ -25,7 +25,7 @@ cd wp-content/plugins/pet-project-analytics
 ddev npm install
 ddev npm run build
 
-# Needed one time, install and activate plugin:
+# Needed one time, activate plugin:
 ddev wp plugin activate pet-project-analytics
 ```
 
