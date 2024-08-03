@@ -70,6 +70,8 @@ class AdminSiteManagement
             exit;
         }
 
+        // TODO: This is double coded --> use view_site ...
+
         // Handle view action
         if (isset($_GET['action']) && $_GET['action'] === 'viewSite' && isset($_GET['site_id'])) {
             $site_id = intval($_GET['site_id']);
@@ -82,7 +84,20 @@ class AdminSiteManagement
                 echo '<tr><th>' . esc_html__('Site Title', 'pp-analytics') . '</th><td>' . esc_html($site->title) . '</td></tr>';
                 echo '<tr><th>' . esc_html__('Site Domain', 'pp-analytics') . '</th><td>' . esc_html($site->domain) . '</td></tr>';
                 echo '<tr><th>' . esc_html__('Tracking Token', 'pp-analytics') . '</th><td>' . esc_html($site->tracking_token) . '</td></tr>';
+
+                // TODO: Add tracking code token to script tag (data-tag?)
+                echo '<tr><th>' . esc_html__('Tracking Code', 'pp-analytics') . '</th>';
+                echo '<td>';
+                $siteUrl = get_site_url();
+                $scriptUrl = $siteUrl.'/wp-content/plugins/pet-project-analytics/assets/dist/js/script.js';
+                echo '<textarea rows="5" style="width:400px;">&lt;script type=&quot;text/javascript&quot; src=&quot;'.$scriptUrl.'&quot;&gt;&lt;/script&gt;
+</textarea>';
+               echo '</td></tr>';
+
                 echo '</table>';
+
+
+
                 echo '<p><a href="' . esc_url(add_query_arg(array('action' => 'viewSite', 'page' => 'pp-analytics'), admin_url('admin.php'))) . '">' . esc_html__('Back to Site Management', 'pp-analytics') . '</a></p>';
                 echo '</div>';
             } else {
@@ -168,7 +183,7 @@ class AdminSiteManagement
     }
 
 
-    public function view_site_page(): void
+    /*public function view_site_page(): void
     {
         if (!current_user_can('manage_options')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
@@ -198,7 +213,7 @@ class AdminSiteManagement
             wp_safe_redirect('admin.php?page=pp-analytics');
             exit; // Ensure no further code is executed after redirect
         }
-    }
+    }*/
 
     private function delete_site(int $site_id): void
     {
