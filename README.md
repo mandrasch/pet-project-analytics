@@ -47,6 +47,7 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] adapt optimized endpoint with buffer file
 - [ ] block request from other domains
 - [ ] give proper credit in PHP code comments (how to do it for GNU?)
+- [ ] check compatibility with koko-analytics installed next to it
 
 ## License
 
