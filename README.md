@@ -1,4 +1,4 @@
-# Pet Project Analytics
+# Pet Project Analytics (WIP)
 
 Pet Project Analytics allows you to track pageviews for multiple webpages within WordPress - in a private, cookie-less way. Inspiration were services like Plausible, Fathom Analytics, umami, matomo & co.
 
