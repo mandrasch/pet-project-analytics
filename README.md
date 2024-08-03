@@ -42,7 +42,7 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] remove automatic tracking for wordpress site
 - [ ] add Sites screen to add sites (title, domain)
 - [ ] add siteId to all screens showing stats
-- [ ] provide JS tracking script for external sites -> with siteId
+- [ ] provide JS tracking script for external sites -> with siteId (or domain detection?)
 - [ ] remove cookie option
 - [ ] adapt optimized endpoint with buffer file
 - [ ] block request from other domains
