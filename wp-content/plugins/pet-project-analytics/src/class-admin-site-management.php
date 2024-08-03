@@ -19,21 +19,32 @@ class AdminSiteManagement
     {
         // Add a top-level menu
         add_menu_page(
-            esc_html__('Site Management', 'pp-analytics'),
-            esc_html__('Site Management', 'pp-analytics'),
+            esc_html__('PP Analytics', 'pp-analytics'),
+            esc_html__('PP Analytics', 'pp-analytics'),
             'manage_options', // Capability
-            'site-management', // Menu slug
+            'pp-analytics', // Menu slug
             array($this, 'show_page'), // Callback function to display the page content
             'dashicons-pets' // Icon URL
         );
 
+        add_submenu_page(
+            'pp-analytics', // Parent slug
+            esc_html__('All Sites', 'pp-analytics'),
+            esc_html__('All Sites', 'pp-analytics'),
+            'manage_options',
+            'pp-analytics', // Submenu slug
+            array($this, 'show_page') // Callback function to display the page content
+        );
+
+        // TODO: rename to pp-analytics-add-site, check other plugins?
+
         // Add sub-menu page for adding a new site
         add_submenu_page(
-            'site-management', // Parent slug
+            'pp-analytics', // Parent slug
             esc_html__('Add New Site', 'pp-analytics'),
             esc_html__('Add New Site', 'pp-analytics'),
             'manage_options',
-            'add-new-site', // Submenu slug
+            'pp-analytics-add-new-site', // Submenu slug
             array($this, 'add_new_site_page') // Callback function to display the page content
         );
     }
@@ -48,19 +59,19 @@ class AdminSiteManagement
         $table_name = $wpdb->prefix . 'pp_analytics_sites';
 
         // Handle delete action
-        if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['site_id']) && isset($_GET['_wpnonce'])) {
+        if (isset($_GET['action']) && $_GET['action'] === 'deleteSite' && isset($_GET['site_id']) && isset($_GET['_wpnonce'])) {
             if (!wp_verify_nonce($_GET['_wpnonce'], 'delete_site_nonce')) {
                 wp_die(__('Security check failed.', 'pp-analytics'));
             }
 
             $site_id = intval($_GET['site_id']);
             $this->delete_site($site_id);
-            wp_redirect(add_query_arg('page', 'site-management', admin_url('admin.php')));
+            wp_safe_redirect(add_query_arg('page', 'pp-analytics', admin_url('admin.php')));
             exit;
         }
 
         // Handle view action
-        if (isset($_GET['action']) && $_GET['action'] === 'view' && isset($_GET['site_id'])) {
+        if (isset($_GET['action']) && $_GET['action'] === 'viewSite' && isset($_GET['site_id'])) {
             $site_id = intval($_GET['site_id']);
             $site = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", $site_id));
 
@@ -72,12 +83,12 @@ class AdminSiteManagement
                 echo '<tr><th>' . esc_html__('Site Domain', 'pp-analytics') . '</th><td>' . esc_html($site->domain) . '</td></tr>';
                 echo '<tr><th>' . esc_html__('Tracking Token', 'pp-analytics') . '</th><td>' . esc_html($site->tracking_token) . '</td></tr>';
                 echo '</table>';
-                echo '<p><a href="' . esc_url(add_query_arg('action', 'view', array('page' => 'site-management'))) . '">' . esc_html__('Back to Site Management', 'pp-analytics') . '</a></p>';
+                echo '<p><a href="' . esc_url(add_query_arg(array('action' => 'viewSite', 'page' => 'pp-analytics'), admin_url('admin.php'))) . '">' . esc_html__('Back to Site Management', 'pp-analytics') . '</a></p>';
                 echo '</div>';
             } else {
                 echo '<div class="wrap"><h1>' . esc_html__('Site Not Found', 'pp-analytics') . '</h1>';
                 echo '<p>' . esc_html__('The site you are trying to view does not exist.', 'pp-analytics') . '</p>';
-                echo '<p><a href="' . esc_url(admin_url('admin.php?page=site-management')) . '">' . esc_html__('Back to Site Management', 'pp-analytics') . '</a></p>';
+                echo '<p><a href="' . esc_url(admin_url('admin.php?page=pp-analytics')) . '">' . esc_html__('Back to Site Management', 'pp-analytics') . '</a></p>';
                 echo '</div>';
             }
             return; // Exit after displaying the view page
@@ -95,8 +106,8 @@ class AdminSiteManagement
             echo '<td>' . esc_html($site->title) . '</td>';
             echo '<td>' . esc_html($site->domain) . '</td>';
             echo '<td>';
-            echo '<a href="' . esc_url(add_query_arg(array('action' => 'view', 'site_id' => $site->id), admin_url('admin.php?page=site-management'))) . '">' . esc_html__('View', 'pp-analytics') . '</a> | ';
-            echo '<a href="' . esc_url(add_query_arg(array('action' => 'delete', 'site_id' => $site->id, '_wpnonce' => wp_create_nonce('delete_site_nonce')), admin_url('admin.php?page=site-management'))) . '" onclick="return confirm(\'' . esc_js(__('Are you sure you want to delete this site?', 'pp-analytics')) . '\');">' . esc_html__('Delete', 'pp-analytics') . '</a>';
+            echo '<a href="' . esc_url(add_query_arg(array('action' => 'viewSite', 'site_id' => $site->id), admin_url('admin.php?page=pp-analytics'))) . '">' . esc_html__('View', 'pp-analytics') . '</a> | ';
+            echo '<a href="' . esc_url(add_query_arg(array('action' => 'deleteSite', 'site_id' => $site->id, '_wpnonce' => wp_create_nonce('delete_site_nonce')), admin_url('admin.php?page=pp-analytics'))) . '" onclick="return confirm(\'' . esc_js(__('Are you sure you want to delete this site?', 'pp-analytics')) . '\');">' . esc_html__('Delete', 'pp-analytics') . '</a>';
             echo '</td>';
             echo '</tr>';
         }
@@ -133,9 +144,15 @@ class AdminSiteManagement
                 array('%s', '%s', '%s')
             );
 
+            // TODO: this did not work? header error?
+            // Start output buffering
+            //ob_start();
             // Redirect to prevent form resubmission
-            wp_redirect(add_query_arg('page', 'site-management', admin_url('admin.php')));
+            // wp_safe_redirect(admin_url('admin.php?page=pp-analytics'));
+
+            echo '<script type="text/javascript">window.location = "' . admin_url('admin.php?page=pp-analytics') . '";</script>';
             exit;
+
         }
 
         echo '<div class="wrap"><h1>' . esc_html__('Add New Site', 'pp-analytics') . '</h1>';
@@ -178,7 +195,7 @@ class AdminSiteManagement
                 echo '<p>' . esc_html__('The site you are trying to view does not exist.', 'pp-analytics') . '</p></div>';
             }
         } else {
-            wp_safe_redirect('admin.php?page=site-management');
+            wp_safe_redirect('admin.php?page=pp-analytics');
             exit; // Ensure no further code is executed after redirect
         }
     }
@@ -192,5 +209,6 @@ class AdminSiteManagement
         global $wpdb;
         $table_name = $wpdb->prefix . 'pp_analytics_sites';
         $wpdb->delete($table_name, array('id' => $site_id), array('%d'));
+
     }
 }

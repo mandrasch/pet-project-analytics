@@ -39,16 +39,24 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 
 ## TODOs
 
-- [ ] remove automatic tracking for wordpress site
-- [ ] add Sites screen to add sites (title, domain)
+- [x] remove automatic tracking for wordpress site (PHP)
+- [ ] remove adding tracking JS to WP Site
+- [ ] reorganize admin menu structure
+- [ ] remove dashboard widgets (for now)
+- [ ] add Sites screen to add sites (title, domain) - WIP
+- [ ] Add sites: proper validation for domains/subdomains
+- [ ] View site: update title, domain
 - [ ] add siteId to all screens showing stats
 - [ ] provide JS tracking script for external sites -> with siteId (or domain detection?)
-- [ ] remove cookie option
+- [ ] change page tracking (wordpress post/pages) to URL path tracking
+- [ ] remove cookie option (?), or opt-in for unique visitors?
 - [ ] adapt optimized endpoint with buffer file
 - [ ] block request from other domains
 - [ ] give proper credit in PHP code comments (how to do it for GNU?)
 - [ ] check compatibility with koko-analytics installed next to it
 - [ ] fix cronjob
+- [ ] check wp-options --> still references to kokoanalytics
+- [ ] fix/adapt uninstall
 
 ## License
 

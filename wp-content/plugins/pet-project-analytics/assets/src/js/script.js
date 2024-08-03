@@ -4,6 +4,9 @@
  * @license GPL-3.0+
  */
 
+// TODO: remove cookie
+// TODO: add site id
+
 // Map variables to global identifiers so that minifier can mangle them to even shorter names
 var doc = document;
 var win = window;
