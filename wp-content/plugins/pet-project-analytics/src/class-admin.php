@@ -84,6 +84,7 @@ class Admin
         $tab = $_GET['tab'] ?? 'dashboard';
         do_action("pp_analytics_show_{$tab}_page");
 
+        // disable for now
         add_action('admin_footer_text', array($this, 'footer_text'));
     }
 
@@ -134,8 +135,12 @@ class Admin
 
     public function footer_text(): string
     {
+
         // ensure upgrade text isn't showing
         add_filter('update_footer', '__return_empty_string');
+
+        // TODO: translate
+        return 'Pet Project Analytics is a fork of the awesome KokoAnalytics by Danny van Kooten.';
 
         /* translators: %1$s links to the WordPress.org plugin review page, %2$s links to the admin page for creating a new post */
         return sprintf(wp_kses(__('If you enjoy using Pet Project Analytics, please <a href="%1$s">review the plugin on WordPress.org</a> or <a href="%2$s">write about it on your blog</a> to help out.', 'pp-analytics'), array('a' => array('href' => array()))), 'https://wordpress.org/support/view/plugin-reviews/pp-analytics?rate=5#postform', admin_url('post-new.php'));
