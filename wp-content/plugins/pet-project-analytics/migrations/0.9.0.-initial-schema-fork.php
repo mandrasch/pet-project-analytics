@@ -11,13 +11,15 @@ $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_referrer_urls");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_sites");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_dates");
 
-// Create the updated sites table
+// Create the updated sites table with a tracking token
 $wpdb->query(
     "CREATE TABLE {$wpdb->prefix}pp_analytics_sites (
        id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
        title VARCHAR(255) NOT NULL,
        domain VARCHAR(255) NOT NULL,
+       tracking_token VARCHAR(255) NOT NULL,
        UNIQUE INDEX (domain),
+       UNIQUE INDEX (tracking_token),
        PRIMARY KEY (id)
     ) ENGINE=INNODB CHARACTER SET=ascii"
 );
