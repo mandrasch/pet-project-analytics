@@ -2,7 +2,6 @@
 <ruleset name="rules">
     <description>rules</description>
     <arg name="colors"/>
-    <file>code-snippets/</file>
     <file>src/</file>
     <file>migrations/</file>
     <file>pp-analytics.php</file>
