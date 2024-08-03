@@ -19,7 +19,7 @@ class AdminSiteManagement
             'manage_options', // Capability
             'site-management', // Menu slug
             array($this, 'show_page'), // Callback function to display the page content
-            'dashicons-admin-site' // Icon URL
+            'dashicons-pets' // Icon URL
         );
 
         // Add sub-menu pages
