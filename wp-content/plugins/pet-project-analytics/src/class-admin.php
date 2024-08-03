@@ -30,7 +30,8 @@ class Admin
 
     public function register_menu(): void
     {
-        add_submenu_page('index.php', esc_html__('Pet Project Analytics', 'pp-analytics'), esc_html__('Analytics', 'pp-analytics'), 'view_pp_analytics', 'pp-analytics', array($this, 'show_page'));
+        // TODO: Move to own menu?
+        add_submenu_page('index.php', esc_html__('Pet Project Analytics', 'pp-analytics'), esc_html__('PP Analytics', 'pp-analytics'), 'view_pp_analytics', 'pp-analytics', array($this, 'show_page'));
     }
 
     public function maybe_run_actions(): void
