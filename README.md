@@ -48,6 +48,7 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] block request from other domains
 - [ ] give proper credit in PHP code comments (how to do it for GNU?)
 - [ ] check compatibility with koko-analytics installed next to it
+- [ ] fix cronjob
 
 ## License
 
