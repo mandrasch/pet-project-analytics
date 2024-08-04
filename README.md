@@ -53,6 +53,7 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [x] remove automatic tracking for wordpress site (PHP)
 - [ ] remove adding tracking JS to WP Site
 - [ ] reorganize admin menu structure
+- [ ] Re-route settings, screen --> move to new parent menu
 - [ ] Add cookie detection of unique visitors, allow opt-out as well
 - [ ] remove dashboard widgets (for now)
 - [ ] add Sites screen to add sites (title, domain) - WIP
