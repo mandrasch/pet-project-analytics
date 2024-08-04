@@ -30,7 +30,7 @@ class Endpoint_Installer
  */
 
 // path to pageviews.php file in uploads directory
-define('pp_analytics_BUFFER_FILE', '$buffer_filename');
+define('PP_ANALYTICS_BUFFER_FILE', '$buffer_filename');
 
 // path to functions.php file in Koko Analytics plugin directory
 require '$functions_filename';

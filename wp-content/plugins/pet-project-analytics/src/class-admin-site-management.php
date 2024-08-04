@@ -2,11 +2,6 @@
 
 namespace PetProjectAnalytics;
 
-function generate_unique_token(): string
-{
-    return wp_generate_password(32, false, false); // Generates a 32-character random string
-}
-
 class AdminSiteManagement
 {
     public function __construct()
@@ -83,18 +78,24 @@ class AdminSiteManagement
                 echo '<table class="form-table">';
                 echo '<tr><th>' . esc_html__('Site Title', 'pp-analytics') . '</th><td>' . esc_html($site->title) . '</td></tr>';
                 echo '<tr><th>' . esc_html__('Site Domain', 'pp-analytics') . '</th><td>' . esc_html($site->domain) . '</td></tr>';
-                echo '<tr><th>' . esc_html__('Tracking Token', 'pp-analytics') . '</th><td>' . esc_html($site->tracking_token) . '</td></tr>';
 
-                // TODO: Add tracking code token to script tag (data-tag?)
                 echo '<tr><th>' . esc_html__('Tracking Code', 'pp-analytics') . '</th>';
                 echo '<td>';
-                $siteUrl = get_site_url();
-                $scriptUrl = $siteUrl.'/wp-content/plugins/pet-project-analytics/assets/dist/js/script.js';
-                echo '<textarea rows="5" style="width:400px;">&lt;script type=&quot;text/javascript&quot; src=&quot;'.$scriptUrl.'&quot;&gt;&lt;/script&gt;
-</textarea>';
-               echo '</td></tr>';
+                $siteUrl = esc_url(get_site_url());
+                $scriptUrl = $siteUrl . '/wp-content/plugins/pet-project-analytics/assets/dist/js/script.js';
+                $trackingCode = sprintf(
+                    '<script defer src="%s" data-domain="%s"></script>',
+                    esc_url($scriptUrl),
+                    esc_attr($site->domain)
+                );
 
+                echo '<textarea rows="5" style="width:400px;" readonly>' . esc_textarea($trackingCode) . '</textarea>';
+                echo '<br><i>Include this in the &lt;head&gt; section of your site.</i>';
+
+                echo '</td></tr>';
                 echo '</table>';
+
+
 
 
 
@@ -145,7 +146,6 @@ class AdminSiteManagement
 
             $title = sanitize_text_field($_POST['pp_analytics_site_title']);
             $domain = sanitize_text_field($_POST['pp_analytics_site_domain']);
-            $tracking_token = generate_unique_token(); // Generate a unique token
 
             // Insert new site into the database
             global $wpdb;
@@ -154,7 +154,6 @@ class AdminSiteManagement
                 array(
                     'title' => $title,
                     'domain' => $domain,
-                    'tracking_token' => $tracking_token,
                 ),
                 array('%s', '%s', '%s')
             );
@@ -167,7 +166,6 @@ class AdminSiteManagement
 
             echo '<script type="text/javascript">window.location = "' . admin_url('admin.php?page=pp-analytics') . '";</script>';
             exit;
-
         }
 
         echo '<div class="wrap"><h1>' . esc_html__('Add New Site', 'pp-analytics') . '</h1>';
@@ -175,7 +173,7 @@ class AdminSiteManagement
         wp_nonce_field('add_new_site_nonce');
         echo '<table class="form-table">';
         echo '<tr valign="top"><th scope="row">' . esc_html__('Title', 'pp-analytics') . '</th><td><input type="text" name="pp_analytics_site_title" required /></td></tr>';
-        echo '<tr valign="top"><th scope="row">' . esc_html__('Domain', 'pp-analytics') . '</th><td><input type="text" name="pp_analytics_site_domain" required /></td></tr>';
+        echo '<tr valign="top"><th scope="row">' . esc_html__('Domain', 'pp-analytics') . '</th><td><input type="text" name="pp_analytics_site_domain" placeholder="example.com" required /><br><small>The domain (or subdomain) of your site. Just the domain, no www. or https:// in front needed.</td></tr>';
         echo '</table>';
         echo '<p><input type="submit" value="' . esc_attr__('Add Site', 'pp-analytics') . '" class="button-primary" /></p>';
         echo '</form>';
@@ -224,6 +222,5 @@ class AdminSiteManagement
         global $wpdb;
         $table_name = $wpdb->prefix . 'pp_analytics_sites';
         $wpdb->delete($table_name, array('id' => $site_id), array('%d'));
-
     }
 }

@@ -25,6 +25,8 @@ function maybe_collect_request()
 function extract_pageview_data(): array
 {
     // TODO: add site id
+    // TODO: remove post id ...
+
     // do nothing if a required parameter is missing
     if (
         !isset($_GET['p'])
@@ -71,6 +73,8 @@ function extract_event_data(): array
     );
 }
 
+// TODO: move/remove this --> we use rest route now ...
+// TODO: This is used by optimized endpoint --> so we should alter this file - can we use optimized endpoint as well or not? it's all POST anayway ...
 function collect_request()
 {
     // ignore requests from bots, crawlers and link previews
@@ -120,8 +124,8 @@ function collect_request()
 
 function get_buffer_filename(): string
 {
-    if (\defined('pp_analytics_BUFFER_FILE')) {
-        return pp_analytics_BUFFER_FILE;
+    if (\defined('PP_ANALYTICS_BUFFER_FILE')) {
+        return PP_ANALYTICS_BUFFER_FILE;
     }
 
     $uploads = wp_upload_dir(null, false);

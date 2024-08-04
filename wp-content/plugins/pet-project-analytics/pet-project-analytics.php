@@ -62,6 +62,7 @@ new Dashboard();
 $aggregator = new Aggregator();
 new Plugin($aggregator);
 new Rest();
+new RestTrackingEndpoint();
 new Shortcode_Most_Viewed_Posts();
 new ShortCode_Site_Counter();
 new Pruner();

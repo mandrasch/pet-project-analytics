@@ -7,41 +7,53 @@ global $wpdb;
 // Drop tables in the correct order to avoid foreign key constraint errors
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_referrer_stats");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_site_stats");
+$wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_post_stats");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_referrer_urls");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_sites");
 $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}pp_analytics_dates");
 
-// Create the updated sites table with a tracking token
+// Sites table
 $wpdb->query(
     "CREATE TABLE {$wpdb->prefix}pp_analytics_sites (
        id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
        title VARCHAR(255) NOT NULL,
        domain VARCHAR(255) NOT NULL,
-       tracking_token VARCHAR(255) NOT NULL,
        UNIQUE INDEX (domain),
-       UNIQUE INDEX (tracking_token),
        PRIMARY KEY (id)
     ) ENGINE=INNODB CHARACTER SET=ascii"
 );
 
-// Create the updated site_stats table with foreign key reference
+// Create the updated site_stats table with foreign key reference to new table of sites
 $wpdb->query(
     "CREATE TABLE {$wpdb->prefix}pp_analytics_site_stats (
+       site_id MEDIUMINT UNSIGNED NOT NULL,
        date DATE NOT NULL,
        visitors MEDIUMINT UNSIGNED NOT NULL,
        pageviews MEDIUMINT UNSIGNED NOT NULL,
-       site_id MEDIUMINT UNSIGNED NOT NULL,
        PRIMARY KEY (date, site_id),
        FOREIGN KEY (site_id) REFERENCES {$wpdb->prefix}pp_analytics_sites (id) ON DELETE CASCADE
     ) ENGINE=INNODB CHARACTER SET=ascii"
+);
+
+// This was post_stats in koko-analytics, we use it now with url instead instead of post id (of wp pages/posts)
+$wpdb->query(
+    "CREATE TABLE {$wpdb->prefix}pp_analytics_post_stats (
+	   date DATE NOT NULL,
+	   url VARCHAR(255) NOT NULL,
+       site_id MEDIUMINT UNSIGNED NOT NULL,
+	   visitors MEDIUMINT UNSIGNED NOT NULL,
+	   pageviews MEDIUMINT UNSIGNED NOT NULL,
+	   PRIMARY KEY (date, url, site_id),
+       FOREIGN KEY (site_id) REFERENCES {$wpdb->prefix}pp_analytics_sites (id) ON DELETE CASCADE
+	) ENGINE=INNODB CHARACTER SET=ascii"
 );
 
 // Create the updated referrer_urls table with foreign key reference
 $wpdb->query(
     "CREATE TABLE {$wpdb->prefix}pp_analytics_referrer_urls (
        id MEDIUMINT UNSIGNED NOT NULL AUTO_INCREMENT,
-       url VARCHAR(255) NOT NULL,
        site_id MEDIUMINT UNSIGNED NOT NULL,
+       url VARCHAR(255) NOT NULL,
        PRIMARY KEY (id),
        UNIQUE INDEX (url),
        FOREIGN KEY (site_id) REFERENCES {$wpdb->prefix}pp_analytics_sites (id) ON DELETE CASCADE
@@ -53,9 +65,9 @@ $wpdb->query(
     "CREATE TABLE {$wpdb->prefix}pp_analytics_referrer_stats (
        date DATE NOT NULL,
        id MEDIUMINT UNSIGNED NOT NULL,
+       site_id MEDIUMINT UNSIGNED NOT NULL,
        visitors MEDIUMINT UNSIGNED NOT NULL,
        pageviews MEDIUMINT UNSIGNED NOT NULL,
-       site_id MEDIUMINT UNSIGNED NOT NULL,
        PRIMARY KEY (date, id, site_id),
        FOREIGN KEY (site_id) REFERENCES {$wpdb->prefix}pp_analytics_sites (id) ON DELETE CASCADE
     ) ENGINE=INNODB CHARACTER SET=ascii"

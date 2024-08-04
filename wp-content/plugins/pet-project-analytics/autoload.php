@@ -19,6 +19,7 @@ spl_autoload_register(function($class) {
         'PetProjectAnalytics\\Plugin' => __DIR__ . '/src/class-plugin.php',
         'PetProjectAnalytics\\Pruner' => __DIR__ . '/src/class-pruner.php',
         'PetProjectAnalytics\\Rest' => __DIR__ . '/src/class-rest.php',
+        'PetProjectAnalytics\\RestTrackingEndpoint' => __DIR__ . '/src/class-rest-tracking-endpoint.php',
         'PetProjectAnalytics\\Script_Loader' => __DIR__ . '/src/class-script-loader.php',
         'PetProjectAnalytics\\ShortCode_Site_Counter' => __DIR__ . '/src/class-shortcode-site-counter.php',
         'PetProjectAnalytics\\Shortcode_Most_Viewed_Posts' => __DIR__ . '/src/class-shortcode-most-viewed-posts.php',

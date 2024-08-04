@@ -10,6 +10,7 @@ namespace PetProjectAnalytics;
 
 class Pageview_Aggregator
 {
+    protected $site_id = 0;
     protected $site_stats     = array(
         'visitors' => 0,
         'pageviews' => 0,
@@ -24,15 +25,19 @@ class Pageview_Aggregator
             return;
         }
 
-        $post_id         = (int) $params[0];
-        $new_visitor     = (int) $params[1];
-        $unique_pageview = (int) $params[2];
-        $referrer_url    = trim((string) $params[3]);
+        // TODO: this needs refactoring! url instead of post id
+        $site_id         = (int) $params[0];
+        $page_url         = (string) $params[1]; // TODO: needs to change to url, string
+        $new_visitor     = (int) $params[2];
+        $unique_pageview = (int) $params[3];
+        $referrer_url    = trim((string) $params[4]);
 
         // Ignore entire line (request) if referrer URL is on blocklist
         if ($referrer_url !== '' && $this->ignore_referrer_url($referrer_url)) {
             return;
         }
+
+        $this->site_id = $site_id;
 
         // update site stats
         $this->site_stats['pageviews'] += 1;
@@ -40,19 +45,18 @@ class Pageview_Aggregator
             $this->site_stats['visitors'] += 1;
         }
 
-        // update page stats (if received)
-        if ($post_id >= 0) {
-            if (! isset($this->post_stats[ $post_id ])) {
-                $this->post_stats[ $post_id ] = array(
+        if (!empty($page_url)) {
+            if (! isset($this->post_stats[ $page_url ])) {
+                $this->post_stats[ $page_url ] = array(
                     'visitors'  => 0,
                     'pageviews' => 0,
                 );
             }
 
-            $this->post_stats[ $post_id ]['pageviews'] += 1;
+            $this->post_stats[ $page_url ]['pageviews'] += 1;
 
             if ($unique_pageview) {
-                $this->post_stats[ $post_id ]['visitors'] += 1;
+                $this->post_stats[ $page_url ]['visitors'] += 1;
             }
         }
 
@@ -61,16 +65,16 @@ class Pageview_Aggregator
             $referrer_url = $this->clean_url($referrer_url);
             $referrer_url = $this->normalize_url($referrer_url);
 
-            if (! isset($this->referrer_stats[ $referrer_url ])) {
-                $this->referrer_stats[ $referrer_url ] = array(
+            if (!isset($this->referrer_stats[$referrer_url])) {
+                $this->referrer_stats[$referrer_url] = array(
                     'pageviews' => 0,
                     'visitors'  => 0,
                 );
             }
 
-            $this->referrer_stats[ $referrer_url ]['pageviews'] += 1;
+            $this->referrer_stats[$referrer_url]['pageviews'] += 1;
             if ($new_visitor) {
-                $this->referrer_stats[ $referrer_url ]['visitors'] += 1;
+                $this->referrer_stats[$referrer_url]['visitors'] += 1;
             }
         }
     }
@@ -88,57 +92,74 @@ class Pageview_Aggregator
         $date = create_local_datetime('now')->format('Y-m-d');
 
         // insert site stats
-        $sql = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_site_stats(date, visitors, pageviews) VALUES(%s, %d, %d) ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", array( $date, $this->site_stats['visitors'], $this->site_stats['pageviews'] ));
+        $sql = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_site_stats(site_id, date, visitors, pageviews) VALUES(%d, %s, %d, %d) ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", array($this->site_id, $date, $this->site_stats['visitors'], $this->site_stats['pageviews']));
         $wpdb->query($sql);
 
-        // insert post stats
         if (count($this->post_stats) > 0) {
+            global $wpdb;
             $values = array();
-            foreach ($this->post_stats as $post_id => $s) {
-                array_push($values, $date, $post_id, $s['visitors'], $s['pageviews']);
+
+            foreach ($this->post_stats as $url => $s) {
+                // Assuming $this->site_id is properly set and valid
+                array_push($values, $date, $url, $this->site_id, $s['visitors'], $s['pageviews']);
             }
-            $placeholders = rtrim(str_repeat('(%s,%d,%d,%d),', count($this->post_stats)), ',');
-            $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_post_stats(date, id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", $values);
+
+            $placeholders = rtrim(str_repeat('(%s,%s,%d,%d,%d),', count($this->post_stats)), ',');
+
+            $sql = $wpdb->prepare(
+                "INSERT INTO {$wpdb->prefix}pp_analytics_post_stats(date, url, site_id, visitors, pageviews) VALUES {$placeholders}
+                ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)",
+                $values
+            );
+
             $wpdb->query($sql);
         }
 
+        // TODO: add site id
         if (count($this->referrer_stats) > 0) {
             // retrieve ID's for known referrer urls
             $referrer_urls = array_keys($this->referrer_stats);
             $placeholders  = rtrim(str_repeat('%s,', count($referrer_urls)), ',');
-            $sql           = $wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}pp_analytics_referrer_urls r WHERE r.url IN({$placeholders})", $referrer_urls);
+            $sql           = $wpdb->prepare("SELECT id, url FROM {$wpdb->prefix}pp_analytics_referrer_urls r WHERE r.url IN({$placeholders}) AND r.site_id = %d", array_merge($referrer_urls, [$this->site_id]));
             $results       = $wpdb->get_results($sql);
             foreach ($results as $r) {
-                $this->referrer_stats[ $r->url ]['id'] = $r->id;
+                $this->referrer_stats[$r->url]['id'] = $r->id;
             }
 
             // build query for new referrer urls
             $new_referrer_urls = array();
             foreach ($this->referrer_stats as $url => $r) {
-                if (! isset($r['id'])) {
+                if (!isset($r['id'])) {
                     $new_referrer_urls[] = $url;
                 }
             }
 
+            // TODO: check if this works
             // insert new referrer urls and set ID in map
             if (count($new_referrer_urls) > 0) {
                 $values       = $new_referrer_urls;
                 $placeholders = rtrim(str_repeat('(%s),', count($values)), ',');
-                $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_referrer_urls(url) VALUES {$placeholders}", $values);
+                $sql          = $wpdb->prepare(
+                    "INSERT INTO {$wpdb->prefix}pp_analytics_referrer_urls(url, site_id) VALUES {$placeholders}",
+                    array_merge(...array_map(fn ($url) => [$url, $this->site_id], $values))
+                );
                 $wpdb->query($sql);
                 $last_insert_id = $wpdb->insert_id;
                 foreach (array_reverse($values) as $url) {
-                    $this->referrer_stats[ $url ]['id'] = $last_insert_id--;
+                    $this->referrer_stats[$url]['id'] = $last_insert_id--;
                 }
             }
 
-            // insert referrer stats
+            // Insert referrer stats
             $values = array();
             foreach ($this->referrer_stats as $referrer_url => $r) {
-                array_push($values, $date, $r['id'], $r['visitors'], $r['pageviews']);
+                array_push($values, $date, $this->site_id, $r['id'], $r['visitors'], $r['pageviews']);
             }
             $placeholders = rtrim(str_repeat('(%s,%d,%d,%d),', count($this->referrer_stats)), ',');
-            $sql          = $wpdb->prepare("INSERT INTO {$wpdb->prefix}pp_analytics_referrer_stats(date, id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)", $values);
+            $sql          = $wpdb->prepare(
+                "INSERT INTO {$wpdb->prefix}pp_analytics_referrer_stats(date, site_id, visitors, pageviews) VALUES {$placeholders} ON DUPLICATE KEY UPDATE visitors = visitors + VALUES(visitors), pageviews = pageviews + VALUES(pageviews)",
+                $values
+            );
             $wpdb->query($sql);
         }
 
@@ -161,12 +182,12 @@ class Pageview_Aggregator
         foreach ($counts as $timestamp => $count) {
             // delete all data older than one hour
             if ((int) $timestamp < $one_hour_ago) {
-                unset($counts[ $timestamp ]);
+                unset($counts[$timestamp]);
             }
         }
 
         // add pageviews for this minute
-        $counts[ (string) time() ] = $pageviews;
+        $counts[(string) time()] = $pageviews;
         update_option('pp_analytics_realtime_pageview_count', $counts, false);
     }
 
@@ -211,7 +232,7 @@ class Pageview_Aggregator
             parse_str($query_str, $params);
 
             // strip all but the following query parameters from the URL
-            $allowed_params = array( 'page_id', 'p', 'cat', 'product' );
+            $allowed_params = array('page_id', 'p', 'cat', 'product');
             $new_params     = array_intersect_key($params, array_flip($allowed_params));
             $new_query_str  = http_build_query($new_params);
             $new_url        = substr($url, 0, $pos + 1) . $new_query_str;
