@@ -2,7 +2,7 @@
 
 Pet Project Analytics allows you to track pageviews for multiple external websites - in a privacy-friendly, cookieless way. No cookie banner needed.
 
-This is a fork of [Koko Analytics](https://www.kokoanalytics.com/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten). Inspiration were services like Plausible, Fathom Analytics, umami, matomo, Koko Analytics, Statify & co.
+This is a fork of [Koko Analytics](https://www.kokoanalytics.com/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten). 
 
 Status: 🚧 Work in progress / not intended for live usage yet. 🚧
 
@@ -16,16 +16,22 @@ Status: 🚧 Work in progress / not intended for live usage yet. 🚧
 
 ## Why?
 
-I believe it would be great to have privacy-friendly web analytics available on every (cheap) PHP webhost - so that people can easily track pageviews and referrers for their hobby projects. This could possibly also increase motivation. 
+I believe it would be great to have privacy-friendly analytics available on every (cheap) PHP webhost - so that people can easily track pageviews and referrers for their hobby projects. This could possibly also increase motivation. 
 
 Why forking a Wordpress plugin? Almost every PHP webhost offers 1-click-WordPress installs nowadays -  not all offer composer  or SSH access. Otherwise this would be a nice Laravel Filament project. ;) 
 
 ## Local Development
 
+It's easy to get started with WordPress plugin development in [DDEV](https://ddev.readthedocs.io/en/stable/users/install/ddev-installation/).
+
 ```bash
+git clone git@github.com:mandrasch/pet-project-analytics.git
+cd pet-project-analytics/
+
+# Start the DDEV project
 ddev start
 
-# Setup and install WordPress, choose your admin password (like password123!)
+# Setup and install WordPress, will prompt for an admin password (like password123!)
 ddev wp core download
 ddev wp core install --url='$DDEV_PRIMARY_URL' --title='NewWordPress' --admin_user=admin --admin_email=admin@example.com --prompt=admin_password
 
@@ -96,3 +102,5 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 ## License
 
 This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of [ibericode/koko-analytics](https://github.com/ibericode/koko-analytics/) by [Danny van Kooten](https://github.com/dannyvankooten), v1.3.10. Massive kudos to Danny for such a well coded plugin!
+
+Further inspiration were services like Plausible, Fathom Analytics, umami, matomo, Koko Analytics, Statify & co.
