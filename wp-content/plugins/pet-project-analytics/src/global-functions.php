@@ -6,6 +6,7 @@
  * @author Danny van Kooten
  */
 
+ // TODO: remove - not needed ...
 /**
  * Prints the Koko Analytics tracking script.
  *

@@ -54,8 +54,10 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] remove adding tracking JS to WP Site
 - [ ] reorganize admin menu structure
 - [ ] Re-route settings, screen --> move to new parent menu
-- [ ] Add cookie detection of unique visitors, allow opt-out as well
+- [ ] Add cookie detection of unique visitors, allow opt-out as well? Or use plausibles way (cookieless)? https://plausible.io/data-policy#how-we-count-unique-users-without-cookies - but this would mean this needs to be stored in db
+    - [ ] https://www.kokoanalytics.com/kb/does-koko-analytics-use-cookies/ - just disable the defaults? problem for GDPR is that "list of viewed pages" could be considered personal data (and therefore acceptance would be needed). because on a shared computer, you could check what the other person visited on a webpage ...
 - [ ] remove dashboard widgets (for now)
+- [ ] remove optimized endpoint, we need to use POST/xhr from outside (maybe re-add it later if needed)
 - [ ] add Sites screen to add sites (title, domain) - WIP
 - [ ] Add sites: proper validation for domains/subdomains
 - [ ] View site: update title, domain
@@ -71,6 +73,9 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] fix/adapt uninstall
 - [ ] rework admin-site-management to use `manage_pp_analytics` cap
 - [ ] generally rename to PP Analytics to make it shorter?
+- [ ] re-test fresh install, remove wp db ... 
+- [ ] test uninstall, is everything removed?
+- [ ] release 1.0.0, just for fun
 
 ## License
 

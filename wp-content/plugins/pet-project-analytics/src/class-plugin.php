@@ -69,8 +69,8 @@ class Plugin
 
     public function maybe_run_db_migrations(): void
     {
-        // echo get_option('PP_ANALYTICS_VERSION');
-        $from_version = get_option('PP_ANALYTICS_VERSION', '0.0.0');
+        // echo get_option('pp_analytics_version');
+        $from_version = get_option('pp_analytics_version', '0.0.0');
         $to_version   = PP_ANALYTICS_VERSION;
         if (\version_compare($from_version, $to_version, '>=')) {
             return;
@@ -80,7 +80,7 @@ class Plugin
         $migrations_dir = PP_ANALYTICS_PLUGIN_DIR . '/migrations/';
         $migrations = new Migrations($from_version, $to_version, $migrations_dir);
         $migrations->run();
-        update_option('PP_ANALYTICS_VERSION', $to_version, true);
+        update_option('pp_analytics_version', $to_version, true);
 
         // make sure scheduled event is set up correctly
         $this->aggregator->setup_scheduled_event();

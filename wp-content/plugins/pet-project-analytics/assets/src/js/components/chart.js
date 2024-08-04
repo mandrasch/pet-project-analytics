@@ -106,11 +106,12 @@ export default function(root, data, startDate, endDate, page, height) {
    * @param {string} endDate
    * @param {string} page
    */
-  function update(startDate, endDate, page) {
+  function update(siteId, startDate, endDate, page) {
     const groupByMonth = (parseISO8601(endDate) - parseISO8601(startDate)) >= 86400000 * 364
     dateFormatOptions = groupByMonth ? {month: 'short', year: 'numeric'} : undefined
 
     request('/stats', {
+      site_id: siteId,
       start_date: startDate,
       end_date: endDate,
       monthly: groupByMonth ? 1 : 0,

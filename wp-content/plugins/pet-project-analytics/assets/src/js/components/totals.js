@@ -27,8 +27,9 @@ export default function(root) {
    * @param {string} endDate
    * @param {int} page
    */
-  function update(startDate, endDate, page) {
+  function update(siteId, startDate, endDate, page) {
     request('/totals', {
+      site_id: siteId,
       start_date: startDate,
       end_date: endDate,
       page,

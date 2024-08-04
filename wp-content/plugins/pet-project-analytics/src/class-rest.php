@@ -27,6 +27,9 @@ class Rest
                 'methods'             => 'GET',
                 'callback'            => array($this, 'get_stats'),
                 'args'                => array(
+                    'site_id' => array(
+                        'validate_callback' => 'absint',
+                    ),
                     'start_date' => array(
                         'validate_callback' => array($this, 'validate_date_param'),
                     ),
@@ -50,6 +53,9 @@ class Rest
                 'methods'             => 'GET',
                 'callback'            => array($this, 'get_totals'),
                 'args'                => array(
+                    'site_id' => array(
+                        'validate_callback' => 'absint',
+                    ),
                     'start_date' => array(
                         'validate_callback' => array($this, 'validate_date_param'),
                     ),
@@ -70,6 +76,9 @@ class Rest
                 'methods'             => 'GET',
                 'callback'            => array($this, 'get_posts'),
                 'args'                => array(
+                    'site_id' => array(
+                        'validate_callback' => 'absint',
+                    ),
                     'start_date' => array(
                         'validate_callback' => array($this, 'validate_date_param'),
                     ),
@@ -90,6 +99,9 @@ class Rest
                 'methods'             => 'GET',
                 'callback'            => array($this, 'get_referrers'),
                 'args'                => array(
+                    'site_id' => array(
+                        'validate_callback' => 'absint',
+                    ),
                     'start_date' => array(
                         'validate_callback' => array($this, 'validate_date_param'),
                     ),
@@ -110,6 +122,9 @@ class Rest
                 'methods'             => 'GET',
                 'callback'            => array($this, 'get_realtime_pageview_count'),
                 'args'                => array(
+                    'site_id' => array(
+                        'validate_callback' => 'absint',
+                    ),
                     'since' => array(
                         'validate_callback' => array($this, 'validate_date_param'),
                     ),
@@ -154,11 +169,12 @@ class Rest
     public function get_stats(\WP_REST_Request $request): \WP_REST_Response
     {
         $params             = $request->get_query_params();
+        $site_id            = $params['site_id'];
         $start_date         = $params['start_date'] ?? create_local_datetime('1st of this month')->format('Y-m-d');
         $end_date           = $params['end_date'] ?? create_local_datetime('now')->format('Y-m-d');
         $group = ($params['monthly'] ?? false) ? 'month' : 'day';
         $page = $params['page'] ?? 0;
-        $result = (new Stats())->get_stats($start_date, $end_date, $group, $page);
+        $result = (new Stats())->get_stats($site_id, $start_date, $end_date, $group, $page);
         $send_cache_headers = WP_DEBUG === false && $this->is_request_for_completed_date_range($request);
         return $this->respond($result, $send_cache_headers);
     }
@@ -169,10 +185,11 @@ class Rest
     public function get_totals(\WP_REST_Request $request): \WP_REST_Response
     {
         $params     = $request->get_query_params();
+        $site_id    = $params['site_id'];
         $start_date = $params['start_date'] ?? create_local_datetime('1st of this month')->format('Y-m-d');
         $end_date   = $params['end_date'] ?? create_local_datetime('now')->format('Y-m-d');
         $page = $params['page'] ?? 0;
-        $result = (new Stats())->get_totals($start_date, $end_date, $page);
+        $result = (new Stats())->get_totals($site_id, $start_date, $end_date, $page);
         $send_cache_headers = WP_DEBUG === false && $this->is_request_for_completed_date_range($request);
         return $this->respond($result, $send_cache_headers);
     }
@@ -184,11 +201,12 @@ class Rest
     {
         $send_cache_headers = WP_DEBUG === false && $this->is_request_for_completed_date_range($request);
         $params     = $request->get_query_params();
+        $site_id    = $params['site_id'];
         $start_date = $params['start_date'] ?? create_local_datetime('1st of this month')->format('Y-m-d');
         $end_date   = $params['end_date'] ?? create_local_datetime('now')->format('Y-m-d');
         $offset     = isset($params['offset']) ? absint($params['offset']) : 0;
         $limit      = isset($params['limit']) ? absint($params['limit']) : 10;
-        $results = (new Stats())->get_posts($start_date, $end_date, $offset, $limit);
+        $results = (new Stats())->get_posts($site_id, $start_date, $end_date, $offset, $limit);
         return $this->respond($results, $send_cache_headers);
     }
 
@@ -198,11 +216,12 @@ class Rest
     public function get_referrers(\WP_REST_Request $request): \WP_REST_Response
     {
         $params             = $request->get_query_params();
+        $site_id    = $params['site_id'];
         $start_date         = $params['start_date'] ?? create_local_datetime('1st of this month')->format('Y-m-d');
         $end_date           = $params['end_date'] ?? create_local_datetime('now')->format('Y-m-d');
         $offset             = isset($params['offset']) ? absint($params['offset']) : 0;
         $limit              = isset($params['limit']) ? absint($params['limit']) : 10;
-        $results = (new Stats())->get_referrers($start_date, $end_date, $offset, $limit);
+        $results = (new Stats())->get_referrers($site_id, $start_date, $end_date, $offset, $limit);
         $send_cache_headers = WP_DEBUG === false && $this->is_request_for_completed_date_range($request);
         return $this->respond($results, $send_cache_headers);
     }

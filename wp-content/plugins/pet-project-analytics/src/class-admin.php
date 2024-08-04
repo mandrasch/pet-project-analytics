@@ -38,6 +38,16 @@ class Admin
             'view_pp_analytics',
             'pp-analytics-show-analytics',
             array($this, 'show_page'));
+
+        // we added settings as well as own page
+        add_submenu_page(
+            'pp-analytics',
+            esc_html__('Settings', 'pp-analytics'),
+            esc_html__('Settings', 'pp-analytics'),
+            'view_pp_analytics',
+            'pp-analytics-settings',
+            array($this, 'show_settings_page'));
+
     }
 
     public function maybe_run_actions(): void

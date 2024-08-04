@@ -8,9 +8,14 @@ let { startDate, endDate, data } = window.pp_analytics
 let page = 0;
 let pageFilterEl = document.querySelector('.ka-page-filter');
 
+// TODO: how to retrieve it properly? from dashboard page? better use data-attribute?
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+let siteId = urlParams.get('siteId');
+
 function applyPageFilter(pageId, pageTitle, pageHref) {
   page = String(pageId) === String(page) ? 0 : pageId;
-  [totals, chart].forEach(f => f.update(startDate, endDate, page));
+  [totals, chart].forEach(f => f.update(siteId, startDate, endDate, page));
   let a = document.createElement('a');
   a.setAttribute('href', pageHref);
   a.textContent = pageTitle;
@@ -24,8 +29,8 @@ document.querySelector('.ka-page-filter--close').addEventListener('click', () =>
 })
 
 const blockComponents = [
-  PostsComponent(document.querySelector('#ka-top-posts'), data.posts, startDate, endDate, applyPageFilter),
-  ReferrersComponent(document.querySelector('#ka-top-referrers'), data.referrers, startDate, endDate)
+  PostsComponent(document.querySelector('#ka-top-posts'), siteId, data.posts, startDate, endDate, applyPageFilter),
+  ReferrersComponent(document.querySelector('#ka-top-referrers'), siteId, data.referrers, startDate, endDate)
 ]
 const totals = Totals(document.querySelector('#ka-totals'));
 const chart = Chart(document.querySelector('#ka-chart'), data.chart, startDate, endDate, page);
@@ -33,11 +38,12 @@ const chart = Chart(document.querySelector('#ka-chart'), data.chart, startDate, 
 Datepicker(document.querySelector('.ka-datepicker'), (newStartDate, newEndDate) => {
   startDate = toISO8601(newStartDate);
   endDate = toISO8601(newEndDate);
-  [totals, chart].forEach(f => f.update(startDate, endDate, page));
+  [totals, chart].forEach(f => f.update(siteId, startDate, endDate, page));
   blockComponents.forEach(f => f.update(startDate, endDate));
   let s = new URLSearchParams(location.search);
   s.set('start_date', startDate)
   s.set('end_date', endDate)
+  // TODO: do we need to update siteId?
   history.replaceState(undefined, undefined, location.pathname + '?' + s)
 });
 
@@ -54,6 +60,6 @@ setInterval(() => {
     return;
   }
 
-  [totals, chart].forEach(f => f.update(startDate, endDate, page));
-  blockComponents.forEach(f => f.update(startDate, endDate));
+  [totals, chart].forEach(f => f.update(siteId, startDate, endDate, page));
+  blockComponents.forEach(f => f.update(siteId, startDate, endDate));
 }, 60000);

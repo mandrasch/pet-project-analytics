@@ -14,7 +14,8 @@ const patch = init([attributesModule, eventListenersModule]);
  * @returns {{update: update}}
  * @constructor
  */
-export function BlockComponent(root, data, startDate, endDate, apiEndpoint, rowView, onUpdate) {
+
+export function BlockComponent(root, siteId, data, startDate, endDate, apiEndpoint, rowView, onUpdate) {
   let elPlaceholder = root.nextElementSibling;
   let pagination = elPlaceholder.nextElementSibling;
   let buttonPrev = pagination.children[0];
@@ -35,6 +36,7 @@ export function BlockComponent(root, data, startDate, endDate, apiEndpoint, rowV
 
   function fetch() {
     request(apiEndpoint, {
+      site_id: siteId,
       offset,
       limit,
       start_date: startDate,
@@ -88,8 +90,8 @@ export function BlockComponent(root, data, startDate, endDate, apiEndpoint, rowV
  * @param {function} onPageClick
  * @returns {{update: update}}
  */
-export function PostsComponent(root, data, startDate, endDate, onPageClick) {
-  return BlockComponent(root, data, startDate, endDate, '/posts', function(item, rank) {
+export function PostsComponent(root, siteId, data, startDate, endDate, onPageClick) {
+  return BlockComponent(root, siteId, data, startDate, endDate, '/posts', function(item, rank) {
     return h('div.ka-topx--row ka-fade', [
       h('div.ka-topx--rank', {}, rank),
       h('div.ka-topx--col', {}, [
@@ -135,8 +137,8 @@ function modifyUrlsForDisplay (item) {
  * @param {Date} endDate
  * @returns {{update: update}}
  */
-export function ReferrersComponent(root, data, startDate, endDate) {
-  return BlockComponent(root, data, startDate, endDate, '/referrers', function(item, rank) {
+export function ReferrersComponent(root, siteId, data, startDate, endDate) {
+  return BlockComponent(root, siteId, data, startDate, endDate, '/referrers', function(item, rank) {
     item = modifyUrlsForDisplay(item)
     return h('div.ka-topx--row ka-fade', [
       h('div.ka-topx--rank', {}, rank),
