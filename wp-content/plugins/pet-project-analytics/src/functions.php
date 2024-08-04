@@ -163,7 +163,7 @@ function test_collect_in_file(): bool
 function get_settings(): array
 {
     $default_settings = array(
-        'use_cookie' => 1,
+        'use_cookie' => 0, // we changed the default, cookie-less by default
         'exclude_user_roles' => array(),
         'exclude_ip_addresses' => array(),
         'prune_data_after_months' => 5 * 12, // 5 years
