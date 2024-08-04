@@ -53,6 +53,7 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [x] remove automatic tracking for wordpress site (PHP)
 - [ ] remove adding tracking JS to WP Site
 - [ ] reorganize admin menu structure
+- [ ] Add cookie detection of unique visitors, allow opt-out as well
 - [ ] remove dashboard widgets (for now)
 - [ ] add Sites screen to add sites (title, domain) - WIP
 - [ ] Add sites: proper validation for domains/subdomains
@@ -67,6 +68,8 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] fix cronjob
 - [ ] check wp-options --> still references to kokoanalytics
 - [ ] fix/adapt uninstall
+- [ ] rework admin-site-management to use `manage_pp_analytics` cap
+- [ ] generally rename to PP Analytics to make it shorter?
 
 ## License
 
