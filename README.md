@@ -1,6 +1,6 @@
 # Pet Project Analytics (WIP)
 
-Pet Project Analytics allows you to track pageviews for multiple external websites - in a privacy-friendly, cookieless way. No cookie banner needed.
+Pet Project Analytics allows you to track pageviews for multiple external websites - in a privacy-friendly, cookieless way = no cookie banner needed.
 
 This is a fork of [Koko Analytics](https://www.kokoanalytics.com/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten). 
 
