@@ -1,10 +1,10 @@
 # Pet Project Analytics (WIP)
 
-Pet Project Analytics allows you to track pageviews for multiple webpages within WordPress - in a private, cookie-less way. Inspiration were services like Plausible, Fathom Analytics, umami, matomo & co.
+Pet Project Analytics allows you to track pageviews for multiple webpages within WordPress - in a privacy-friendly way. Inspiration were services like Plausible, Fathom Analytics, umami, matomo, Koko Analytics, Statify & co.
 
-This is a fork of the [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten).
+This is a fork of [ibericode/koko-analytics](https://github.com/ibericode/koko-analytics/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten).
 
-🚧 Status: Work in progress / not intended for live usage yet. 🚧
+Status: 🚧 Work in progress / not intended for live usage yet. 🚧
 
 ## Local Development
 
@@ -29,7 +29,18 @@ ddev npm run build
 ddev wp plugin activate pet-project-analytics
 ```
 
-If you change CSS/JS, you need to run `ddev npm run build` within `wp-content/plugins/pet-project-analytics` again.
+If you change CSS/JS, you need to run `ddev npm run build` within `wp-content/plugins/pet-project-analytics` again. Beware: If linting fails, file will be empty. Run `ddev npm run lint` before to check.
+
+Demo site for tracking: [https://pet-project-analytics.ddev.site/demo/](https://pet-project-analytics.ddev.site/demo/)
+
+To check the WP crons, you can use https://de.wordpress.org/plugins/wp-crontrol/. There is `pp_analytics_aggregate_stats` which will read the buffer file and insert visits in the database. By default the buffer file is located at `/wp-content/uploads/pageviews.php`. See `wp-content/debug.log` for debugging / enable WP_DEBUG logging.
+
+Example of buffer file:
+
+```bash
+<?php exit; ?>
+p,1,https://pet-project-analytics.ddev.site/demo-site.html,1,,
+```
 
 ### How to update plugin version (locally)
 
@@ -49,7 +60,6 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] add siteId to all screens showing stats
 - [ ] provide JS tracking script for external sites -> with siteId (or domain detection?)
 - [ ] change page tracking (wordpress post/pages) to URL path tracking
-- [ ] remove cookie option (?), or opt-in for unique visitors?
 - [ ] adapt optimized endpoint with buffer file
 - [ ] block request from other domains
 - [ ] give proper credit in PHP code comments (how to do it for GNU?)
@@ -60,4 +70,4 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 
 ## License
 
-This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/) by [Danny van Kooten](https://github.com/dannyvankooten).
+This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/) by [Danny van Kooten](https://github.com/dannyvankooten), v1.3.10.
