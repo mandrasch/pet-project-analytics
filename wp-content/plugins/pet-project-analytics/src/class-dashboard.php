@@ -93,9 +93,7 @@ class Dashboard
             'startDate' => $_GET['start_date'] ?? $dateStart->format('Y-m-d'),
             'endDate' => $_GET['end_date'] ?? $dateEnd->format('Y-m-d'),
             'i18n' => array(
-                'Visitors' => __('Visitors', 'pp-analytics'),
-                'Pageviews' => __('Pageviews', 'pp-analytics'),
-            ),
+                'Visitors' => __('Visitors', 'pp-analytics'),            ),
             'data' => array(
                 'chart' => $stats->get_stats($site_id, $dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), $groupChartBy),
                 'posts' => $stats->get_posts($site_id, $dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), 0, $items_per_page),
@@ -153,13 +151,16 @@ class Dashboard
 
     private function maybe_show_adblocker_notice(): void
     {
-?>
-        <div class="notice notice-warning is-dismissible" id="koko-analytics-adblock-notice" style="display: none;">
-            <p>
-                <?php echo esc_html__('You appear to be using an ad-blocker that has Koko Analytics on its blocklist. Please whitelist this domain in your ad-blocker setting if your dashboard does not seem to be working correctly.', 'koko-analytics'); ?>
-            </p>
-        </div>
-        <script src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', PP_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>" defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
-<?php
+        ?>
+<div class="notice notice-warning is-dismissible" id="koko-analytics-adblock-notice" style="display: none;">
+    <p>
+        <?php echo esc_html__('You appear to be using an ad-blocker that has Koko Analytics on its blocklist. Please whitelist this domain in your ad-blocker setting if your dashboard does not seem to be working correctly.', 'koko-analytics'); ?>
+    </p>
+</div>
+<script
+    src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', PP_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>"
+    defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
+
+        <?php
     }
 }

@@ -8,6 +8,8 @@
 
 namespace PetProjectAnalytics;
 
+// TODO: remove the whole file
+
 class Dashboard_Widget
 {
     public function __construct()

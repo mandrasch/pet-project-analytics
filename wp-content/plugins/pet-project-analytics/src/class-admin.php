@@ -37,7 +37,8 @@ class Admin
             esc_html__('View Analytics', 'pp-analytics'),
             'view_pp_analytics',
             'pp-analytics-show-analytics',
-            array($this, 'show_page'));
+            array($this, 'show_page')
+        );
 
         // we added settings as well as own page
         add_submenu_page(
@@ -46,8 +47,8 @@ class Admin
             esc_html__('Settings', 'pp-analytics'),
             'view_pp_analytics',
             'pp-analytics-settings',
-            array($this, 'show_settings_page'));
-
+            array($this, 'show_settings_page')
+        );
     }
 
     public function maybe_run_actions(): void

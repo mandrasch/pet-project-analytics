@@ -27,7 +27,7 @@ class RestTrackingEndpoint
 
     // TODO: rename to track?
     // TODO: rework this!
-    function pp_analytics_event_handler(\WP_REST_Request $request)
+    public function pp_analytics_event_handler(\WP_REST_Request $request)
     {
         // Get the parameters from the request
         $params = $request->get_json_params();
@@ -52,7 +52,7 @@ class RestTrackingEndpoint
     }
 
     // Our altered function to collect request via POST
-    function collect_request($params)
+    public function collect_request($params)
     {
         global $wpdb;
 

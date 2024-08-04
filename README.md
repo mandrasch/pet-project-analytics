@@ -62,6 +62,14 @@ Example of buffer file:
 p,1,https://pet-project-analytics.ddev.site/demo-site.html,1,,
 ```
 
+Linting:
+
+```bash
+ddev composer run lint
+
+cd wp-content/plugins/pet-project-analytics
+ddev npm run lint
+
 ### How to update plugin version (locally)
 
 - change version in pet-project-analytics.php in php code comments as well in `\define('PP_ANALYTICS_VERSION', '1.3.10');` (current version is stored in wp_options)
