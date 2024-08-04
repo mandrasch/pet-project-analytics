@@ -27,7 +27,7 @@ use function PetProjectAnalytics\fmt_large_number;
     <div style="display: flex; gap: 12px; ">
 
         <div class="ka-site-filter">
-            <span><?php esc_html_e('Site', 'pp-analytics'); ?> = </span>
+            <span><?php esc_html_e('Site', 'pp-analytics'); ?> </span>
             <select id="ka-site-select">
                 <?php foreach ($this->get_sites() as $site) { ?>
                     <option value="<?php echo esc_attr($site->id); ?>" <?php echo (isset($_GET['siteId']) && $_GET['siteId'] == $site->id) ? 'selected' : ''; ?>>
