@@ -97,15 +97,16 @@ export function PostsComponent(root, siteId, data, startDate, endDate, onPageCli
       h('div.ka-topx--col', {}, [
         h('a', {
           attrs: {
-            href: item.post_permalink,
+            href: item.url,
           },
           on: {
             click: (evt) => {
               evt.preventDefault();
+              // TODO: refactor
               onPageClick(item.id, item.post_title, item.post_permalink);
             }
           }
-        },item.post_title || '(no title)'),
+        },item.url || '(no title)'),
       ]),
       h('div.ka-topx--amount', Math.max(1, item.visitors)),
       h('div.ka-topx--amount', item.pageviews)

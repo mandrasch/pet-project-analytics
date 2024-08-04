@@ -65,7 +65,7 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 - [ ] provide JS tracking script for external sites -> with siteId (or domain detection?)
 - [ ] change page tracking (wordpress post/pages) to URL path tracking
 - [ ] adapt optimized endpoint with buffer file
-- [ ] block request from other domains
+- [ ] block request from other domains --> $_REQUEST
 - [ ] give proper credit in PHP code comments (how to do it for GNU?)
 - [ ] check compatibility with koko-analytics installed next to it
 - [ ] fix cronjob

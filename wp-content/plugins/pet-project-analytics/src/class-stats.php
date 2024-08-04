@@ -123,6 +123,7 @@ class Stats
         }, $result);
     }
 
+    // TODO:  url AS post_id not really needed, refactor this
     // modified to use url instead of post/page id as main identifier
     public function get_posts(int $site_id, string $start_date, string $end_date, int $offset = 0, int $limit = 10): array
     {
@@ -130,7 +131,7 @@ class Stats
 
         $sql = $wpdb->prepare(
             "
-            SELECT url AS post_id, SUM(visitors) AS visitors, SUM(pageviews) AS pageviews
+            SELECT url, SUM(visitors) AS visitors, SUM(pageviews) AS pageviews
             FROM {$wpdb->prefix}pp_analytics_post_stats
             WHERE date >= %s AND date <= %s AND site_id = %d
             GROUP BY url
@@ -146,8 +147,9 @@ class Stats
         $results = $wpdb->get_results($sql);
 
         return array_map(function ($row) {
+
             // special handling of records with URL as post_id
-            if ($row->post_id === home_url()) {
+            /*if ($row->post_id === home_url()) {
                 $row->post_permalink = home_url();
                 $row->post_title     = get_bloginfo('name');
             } else {
@@ -159,7 +161,7 @@ class Stats
                     $row->post_title = '(deleted post)';
                     $row->post_permalink = '';
                 }
-            }
+            }*/
 
             $row->pageviews = (int) $row->pageviews;
             $row->visitors  = (int) $row->visitors;
