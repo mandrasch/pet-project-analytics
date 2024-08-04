@@ -1,10 +1,24 @@
 # Pet Project Analytics (WIP)
 
-Pet Project Analytics allows you to track pageviews for multiple webpages within WordPress - in a privacy-friendly way. Inspiration were services like Plausible, Fathom Analytics, umami, matomo, Koko Analytics, Statify & co.
+Pet Project Analytics allows you to track pageviews for multiple external websites - in a privacy-friendly, cookieless way. No cookie banner needed.
 
-This is a fork of [ibericode/koko-analytics](https://github.com/ibericode/koko-analytics/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten).
+This is a fork of [Koko Analytics](https://www.kokoanalytics.com/), an awesome WordPress plugin created by [Danny van Kooten](https://github.com/dannyvankooten). Inspiration were services like Plausible, Fathom Analytics, umami, matomo, Koko Analytics, Statify & co.
 
 Status: 🚧 Work in progress / not intended for live usage yet. 🚧
+
+## Features
+
+- fork of [Koko Analytics](https://www.kokoanalytics.com/) with the ability to track multiple external websites
+
+![](.readme/screenshot_add_new_site.png?raw=true)
+![](.readme/screenshot_view_site.png?raw=true)
+![](.readme/screenshot_analytics_by_site.png?raw=true)
+
+## Why?
+
+I believe it would be great to have privacy-friendly web analytics available on every (cheap) PHP webhost - so that people can easily track pageviews and referrers for their hobby projects. This could possibly also increase motivation. 
+
+Why forking a Wordpress plugin? Almost every PHP webhost offers 1-click-WordPress installs nowadays -  not all offer composer  or SSH access. Otherwise this would be a nice Laravel Filament project. ;) 
 
 ## Local Development
 
@@ -81,4 +95,4 @@ This will run SQL migrations automatically (see `maybe_run_migration`)
 
 ## License
 
-This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of [ibericode/koko-analytics/](https://github.com/ibericode/koko-analytics/) by [Danny van Kooten](https://github.com/dannyvankooten), v1.3.10.
+This is licensed as GNU GENERAL PUBLIC LICENSE Version 3. Fork of [ibericode/koko-analytics](https://github.com/ibericode/koko-analytics/) by [Danny van Kooten](https://github.com/dannyvankooten), v1.3.10. Massive kudos to Danny for such a well coded plugin!
