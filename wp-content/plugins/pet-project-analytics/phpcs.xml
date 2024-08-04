@@ -4,7 +4,7 @@
     <arg name="colors"/>
     <file>src/</file>
     <file>migrations/</file>
-    <file>pp-analytics.php</file>
+    <file>pet-project-analytics.php</file>
     <exclude-pattern>*\.(html|css|js)</exclude-pattern>
     <rule ref="PSR12">
         <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps" />
