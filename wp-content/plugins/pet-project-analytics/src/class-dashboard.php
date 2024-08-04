@@ -41,21 +41,46 @@ class Dashboard
         $dates = new Dates();
         $stats = new Stats();
         $dateRange = $dates->get_range($settings['default_view']);
+        $site_id = isset($_GET['siteId']) ? $_GET['siteId'] : null; // TODO: show error if null
+
+        // If no siteId is provided, get the first siteId from the database and redirect
+        if (!$site_id) {
+            // Retrieve the first available siteId
+            $sites = $this->get_sites();
+            if (!empty($sites)) {
+                $first_site_id = $sites[0]->id; // Assuming 'site_id' is the field name
+
+                // TODO: this did not work? header error? Warning: Cannot modify header information - headers already sent by (output started at /var/www/html/wp-includes/script-loader.php:2936) in /var/www/html/wp-includes/pluggable.php on line 1435
+                // Redirect to the URL with the default siteId
+                // wp_safe_redirect(add_query_arg('siteId', $first_site_id));
+
+                // For now we use JS redirect ¯\_(ツ)_/¯
+                echo '<script type="text/javascript">window.location = "' . add_query_arg('siteId', $first_site_id) . '";</script>';
+
+                exit;
+            } else {
+                // Handle case where there are no sites available
+                wp_die(__('No sites available to set as default.', 'your-text-domain'));
+            }
+        }
+
         $dateStart  = isset($_GET['start_date']) ? create_local_datetime($_GET['start_date']) : $dateRange[0];
         $dateEnd    = isset($_GET['end_date']) ? create_local_datetime($_GET['end_date']) : $dateRange[1];
         $dateFormat = get_option('date_format');
         $preset     = !isset($_GET['start_date']) && !isset($_GET['end_date']) ? $settings['default_view'] : 'custom';
-        $totals = $stats->get_totals($dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d'));
+        $totals = $stats->get_totals($site_id, $dateStart->format('Y-m-d'), $dateEnd->format('Y-m-d'));
         $realtime = get_realtime_pageview_count('-1 hour');
 
         require __DIR__ . '/views/dashboard-page.php';
     }
 
-    private function get_script_data(\DateTimeInterface $dateStart, \DateTimeInterface $dateEnd): array
+    private function get_script_data(int $site_id, \DateTimeInterface $dateStart, \DateTimeInterface $dateEnd): array
     {
         $stats = new Stats();
         $items_per_page = (int) apply_filters('pp_analytics_items_per_page', 20);
         $groupChartBy = 'day';
+
+        // TODO: sanitize site_id?
 
         if ($dateEnd->getTimestamp() - $dateStart->getTimestamp() >= 86400 * 364) {
             $groupChartBy = 'month';
@@ -68,13 +93,13 @@ class Dashboard
             'startDate' => $_GET['start_date'] ?? $dateStart->format('Y-m-d'),
             'endDate' => $_GET['end_date'] ?? $dateEnd->format('Y-m-d'),
             'i18n' => array(
-                'Visitors' => __('Visitors', 'koko-analytics'),
-                'Pageviews' => __('Pageviews', 'koko-analytics'),
+                'Visitors' => __('Visitors', 'pp-analytics'),
+                'Pageviews' => __('Pageviews', 'pp-analytics'),
             ),
             'data' => array(
-                'chart' => $stats->get_stats($dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), $groupChartBy),
-                'posts' => $stats->get_posts($dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), 0, $items_per_page),
-                'referrers' => $stats->get_referrers($dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), 0, $items_per_page),
+                'chart' => $stats->get_stats($site_id, $dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), $groupChartBy),
+                'posts' => $stats->get_posts($site_id, $dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), 0, $items_per_page),
+                'referrers' => $stats->get_referrers($site_id, $dateStart->format("Y-m-d"), $dateEnd->format('Y-m-d'), 0, $items_per_page),
             )
         ), $dateStart, $dateEnd);
     }
@@ -95,6 +120,26 @@ class Dashboard
         ];
     }
 
+
+    /**
+     * Get a list of sites.
+     *
+     * @return array Array of objects containing site_id and site_name.
+     */
+    public function get_sites(): array
+    {
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'pp_analytics_sites';
+
+        // Query to retrieve site_id and site_name from the table
+        $sql = "SELECT id, title FROM $table_name ORDER BY title ASC";
+
+        // Execute the query
+        $results = $wpdb->get_results($sql);
+
+        return $results;
+    }
+
     private function get_usage_tip(): string
     {
         $tips = [
@@ -108,13 +153,13 @@ class Dashboard
 
     private function maybe_show_adblocker_notice(): void
     {
-        ?>
+?>
         <div class="notice notice-warning is-dismissible" id="koko-analytics-adblock-notice" style="display: none;">
             <p>
                 <?php echo esc_html__('You appear to be using an ad-blocker that has Koko Analytics on its blocklist. Please whitelist this domain in your ad-blocker setting if your dashboard does not seem to be working correctly.', 'koko-analytics'); ?>
             </p>
         </div>
         <script src="<?php echo plugins_url('/assets/dist/js/koko-analytics-script-test.js', PP_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>" defer onerror="document.getElementById('koko-analytics-adblock-notice').style.display = '';"></script>
-        <?php
+<?php
     }
 }

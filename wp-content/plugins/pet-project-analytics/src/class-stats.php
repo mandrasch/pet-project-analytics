@@ -8,9 +8,11 @@
 
 namespace PetProjectAnalytics;
 
+// TODO: we need to change $page (id) to be url
+
 class Stats
 {
-    public function get_totals(string $start_date, string $end_date, int $page = 0): ?object
+    public function get_totals(int $site_id, string $start_date, string $end_date, int $page = 0): ?object
     {
         global $wpdb;
 
@@ -22,10 +24,10 @@ class Stats
         $previous_start_date = gmdate('Y-m-d', strtotime($start_date) - (strtotime($end_date . ' 23:59:59') - strtotime($start_date)));
 
         $table = $wpdb->prefix . 'pp_analytics_site_stats';
-        $where_a = 's.date >= %s AND s.date <= %s';
-        $args_a = array($start_date, $end_date);
-        $where_b = 's.date >= %s AND s.date < %s';
-        $args_b = array($previous_start_date, $start_date);
+        $where_a = 's.date >= %s AND s.date <= %s AND s.site_id = %d';
+        $args_a = array($start_date, $end_date, $site_id);
+        $where_b = 's.date >= %s AND s.date < %s AND s.site_id = %d';
+        $args_b = array($previous_start_date, $start_date, $site_id);
 
         if ($page > 0) {
             $table = $wpdb->prefix . 'pp_analytics_post_stats';
@@ -35,16 +37,19 @@ class Stats
             $args_b[] = $page;
         }
 
-        $sql                = $wpdb->prepare("SELECT
-			        cur.*,
-			        cur.visitors - prev.visitors AS visitors_change,
-			        cur.pageviews - prev.pageviews AS pageviews_change,
-			        cur.visitors / prev.visitors - 1 AS visitors_change_rel,
-			        cur.pageviews / prev.pageviews - 1 AS pageviews_change_rel
-			    FROM
-			        (SELECT COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews FROM {$table} s WHERE $where_a) AS cur,
-			        (SELECT COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews FROM {$table} s WHERE $where_b) AS prev;
-			", array_merge($args_a, $args_b));
+        $sql = $wpdb->prepare(
+            "SELECT
+                cur.*,
+                cur.visitors - prev.visitors AS visitors_change,
+                cur.pageviews - prev.pageviews AS pageviews_change,
+                cur.visitors / prev.visitors - 1 AS visitors_change_rel,
+                cur.pageviews / prev.pageviews - 1 AS pageviews_change_rel
+            FROM
+                (SELECT COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews FROM {$table} s WHERE $where_a) AS cur,
+                (SELECT COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews FROM {$table} s WHERE $where_b) AS prev;
+            ",
+            array_merge($args_a, $args_b)
+        );
         $result = $wpdb->get_row($sql);
 
         // sometimes there are pageviews, but no counted visitors
@@ -66,38 +71,48 @@ class Stats
      * @param string $start_date
      * @param string $end_date
      * @param string $group
+     * @param int $site_id
      * @param int $page
      * @return array
      */
-    public function get_stats(string $start_date, string $end_date, string $group, int $page = 0): array
+    public function get_stats(int $site_id, string $start_date, string $end_date, string $group, int $page = 0): array
     {
         global $wpdb;
+
+        // Determine date format based on the grouping
         if ($group === 'month') {
             $date_format = '%Y-%m';
         } else {
             $date_format = '%Y-%m-%d';
         }
 
+        // TODO: this needs to be changed to be url (or removed completely)
+        // Define the table and join conditions based on whether a page is specified
         if ($page > 0) {
             $table = $wpdb->prefix . 'pp_analytics_post_stats';
-            $join_on = 's.date = d.date AND s.id = %d';
-            $args = array($date_format, $page, $start_date, $end_date);
+            // Adjust join condition based on actual column names
+            $join_on = 's.date = d.date AND s.page_id = %d AND s.site_id = %d'; // Adjust column names as needed
+            $args = array($date_format, $page, $site_id, $start_date, $end_date);
         } else {
             $table = $wpdb->prefix . 'pp_analytics_site_stats';
-            $args = array($date_format, $start_date, $end_date);
-            $join_on = 's.date = d.date';
+            // Adjust join condition based on actual column names
+            $join_on = 's.date = d.date AND s.site_id = %d'; // Adjust column names as needed
+            $args = array($date_format, $site_id, $start_date, $end_date);
         }
 
+        // Prepare and execute the SQL query
         $sql = $wpdb->prepare(
             "
-                SELECT DATE_FORMAT(d.date, %s) AS _date, COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews
-                FROM {$wpdb->prefix}pp_analytics_dates d
-                    LEFT JOIN {$table} s ON {$join_on}
-                WHERE d.date >= %s AND d.date <= %s
-                GROUP BY _date",
+            SELECT DATE_FORMAT(d.date, %s) AS _date, COALESCE(SUM(visitors), 0) AS visitors, COALESCE(SUM(pageviews), 0) AS pageviews
+            FROM {$wpdb->prefix}pp_analytics_dates d
+                LEFT JOIN {$table} s ON {$join_on}
+            WHERE d.date >= %s AND d.date <= %s
+            GROUP BY _date",
             $args
         );
         $result = $wpdb->get_results($sql);
+
+        // Map results to desired format
         return array_map(function ($row) {
             $row->date = $row->_date;
             unset($row->_date);
@@ -108,28 +123,35 @@ class Stats
         }, $result);
     }
 
-    public function get_posts(string $start_date, string $end_date, int $offset = 0, int $limit = 10): array
+    // modified to use url instead of post/page id as main identifier
+    public function get_posts(int $site_id, string $start_date, string $end_date, int $offset = 0, int $limit = 10): array
     {
         global $wpdb;
+
         $sql = $wpdb->prepare(
             "
-                SELECT s.id, SUM(visitors) AS visitors, SUM(pageviews) AS pageviews
-                FROM {$wpdb->prefix}pp_analytics_post_stats s
-                WHERE s.date >= %s AND s.date <= %s
-                GROUP BY s.id
-                ORDER BY pageviews DESC, s.id ASC
-                LIMIT %d, %d",
-            array($start_date, $end_date, $offset, $limit)
+            SELECT url AS post_id, SUM(visitors) AS visitors, SUM(pageviews) AS pageviews
+            FROM {$wpdb->prefix}pp_analytics_post_stats
+            WHERE date >= %s AND date <= %s AND site_id = %d
+            GROUP BY url
+            ORDER BY pageviews DESC
+            LIMIT %d, %d",
+            $start_date,
+            $end_date,
+            $site_id,
+            $offset,
+            $limit
         );
+
         $results = $wpdb->get_results($sql);
 
         return array_map(function ($row) {
-            // special handling of records with ID 0 (indicates a view of the front page when front page is not singular)
-            if ($row->id == 0) {
+            // special handling of records with URL as post_id
+            if ($row->post_id === home_url()) {
                 $row->post_permalink = home_url();
                 $row->post_title     = get_bloginfo('name');
             } else {
-                $post = get_post($row->id);
+                $post = get_page_by_path($row->post_id); // Using get_page_by_path to retrieve the post
                 if ($post) {
                     $row->post_title = isset($post->post_title) ? $post->post_title : $post->post_name;
                     $row->post_permalink = get_permalink($post);
@@ -145,20 +167,22 @@ class Stats
         }, $results);
     }
 
-    public function get_referrers(string $start_date, string $end_date, int $offset = 0, int $limit = 10): array
+    // TODO: converted by chatgtp, needs testing with referrers
+    public function get_referrers(int $site_id, string $start_date, string $end_date, int $offset = 0, int $limit = 10): array
     {
         global $wpdb;
         $sql = $wpdb->prepare(
             "
-                SELECT s.id, url, SUM(visitors) As visitors, SUM(pageviews) AS pageviews
+                SELECT s.id, url, SUM(visitors) AS visitors, SUM(pageviews) AS pageviews
                 FROM {$wpdb->prefix}pp_analytics_referrer_stats s
                     JOIN {$wpdb->prefix}pp_analytics_referrer_urls r ON r.id = s.id
                 WHERE s.date >= %s
                   AND s.date <= %s
+                  AND s.site_id = %d
                 GROUP BY s.id
                 ORDER BY pageviews DESC, r.id ASC
                 LIMIT %d, %d",
-            array($start_date, $end_date, $offset, $limit)
+            array($start_date, $end_date, $site_id, $offset, $limit)
         );
         return $wpdb->get_results($sql);
     }

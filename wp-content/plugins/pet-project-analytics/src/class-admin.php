@@ -15,7 +15,7 @@ class Admin
         global $pagenow;
 
         add_action('init', array($this, 'maybe_run_actions'), 10, 0);
-        add_action('admin_menu', array($this, 'register_menu'), 10, 0);
+        add_action('admin_menu', array($this, 'register_menu'), 11, 0); // important: increased prio here, we added a parent menu in admin-site-management.php
         add_action('pp_analytics_install_optimized_endpoint', array($this, 'install_optimized_endpoint'), 10, 0);
         add_action('pp_analytics_save_settings', array($this, 'save_settings'), 10, 0);
         add_action('pp_analytics_reset_statistics', array($this, 'reset_statistics'), 10, 0);
@@ -30,8 +30,14 @@ class Admin
 
     public function register_menu(): void
     {
-        // TODO: Move to own menu?
-        add_submenu_page('index.php', esc_html__('Pet Project Analytics', 'pp-analytics'), esc_html__('PP Analytics', 'pp-analytics'), 'view_pp_analytics', 'pp-analytics', array($this, 'show_page'));
+        // We moved it to our own menu, needed to change priority as well
+        add_submenu_page(
+            'pp-analytics',
+            esc_html__('View Analytics', 'pp-analytics'),
+            esc_html__('View Analytics', 'pp-analytics'),
+            'view_pp_analytics',
+            'pp-analytics-show-analytics',
+            array($this, 'show_page'));
     }
 
     public function maybe_run_actions(): void

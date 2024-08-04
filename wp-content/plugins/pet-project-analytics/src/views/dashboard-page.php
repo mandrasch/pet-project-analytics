@@ -14,6 +14,9 @@ $tab = 'dashboard';
  */
 
 use function PetProjectAnalytics\fmt_large_number;
+
+// TODO: here is 'ka' used a lot, need to change it to 'pp' to avoid conflicts when installed next to koko analytics?
+
 ?>
 <script src="<?php echo plugins_url('assets/dist/js/dashboard.js', PP_ANALYTICS_PLUGIN_FILE); ?>?v=<?php echo PP_ANALYTICS_VERSION; ?>" defer></script>
 <?php do_action('pp_analytics_dashboard_print_assets'); ?>
@@ -22,6 +25,18 @@ use function PetProjectAnalytics\fmt_large_number;
     <?php $this->maybe_show_adblocker_notice(); ?>
 
     <div style="display: flex; gap: 12px; ">
+
+        <div class="ka-site-filter">
+            <span><?php esc_html_e('Site', 'pp-analytics'); ?> = </span>
+            <select id="ka-site-select">
+                <?php foreach ($this->get_sites() as $site) { ?>
+                    <option value="<?php echo esc_attr($site->id); ?>" <?php echo (isset($_GET['siteId']) && $_GET['siteId'] == $site->id) ? 'selected' : ''; ?>>
+                        <?php echo esc_html($site->title); ?>
+                    </option>
+                <?php } ?>
+            </select>
+        </div>
+
         <div class="ka-datepicker">
             <div class='ka-datepicker--label' aria-expanded="false" aria-controls="ka-datepicker-dropdown">
                 <?php echo $dateStart->format($dateFormat); ?> — <?php echo $dateEnd->format($dateFormat); ?>
@@ -144,11 +159,25 @@ use function PetProjectAnalytics\fmt_large_number;
         <?php do_action('pp_analytics_show_dashboard_components'); ?>
     </div>
 
-    <div class="ka-margin-s" style="text-align: right">
+    <!-- <div class="ka-margin-s" style="text-align: right">
         <p><?php echo $this->get_usage_tip(); ?></p>
-    </div>
+    </div> -->
 </div>
 
 <script>
-var pp_analytics = <?php echo json_encode($this->get_script_data($dateStart, $dateEnd)); ?>;
+var pp_analytics = <?php echo json_encode($this->get_script_data($_GET['siteId'], $dateStart, $dateEnd)); ?>;
+</script>
+
+<!-- TODO: could be move to JS file?) -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var siteSelect = document.getElementById('ka-site-select');
+
+    siteSelect.addEventListener('change', function () {
+        var siteId = siteSelect.value;
+        var url = new URL(window.location.href);
+        url.searchParams.set('siteId', siteId);
+        window.location.href = url.toString();
+    });
+});
 </script>

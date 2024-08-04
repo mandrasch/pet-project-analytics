@@ -21,7 +21,7 @@ class Rest
         $is_dashboard_public = $settings['is_dashboard_public'];
 
         register_rest_route(
-            'koko-analytics/v1',
+            'pp-analytics/v1',
             '/stats',
             array(
                 'methods'             => 'GET',
@@ -44,7 +44,7 @@ class Rest
         );
 
         register_rest_route(
-            'koko-analytics/v1',
+            'pp-analytics/v1',
             '/totals',
             array(
                 'methods'             => 'GET',
@@ -64,7 +64,7 @@ class Rest
         );
 
         register_rest_route(
-            'koko-analytics/v1',
+            'pp-analytics/v1',
             '/posts',
             array(
                 'methods'             => 'GET',
@@ -84,7 +84,7 @@ class Rest
         );
 
         register_rest_route(
-            'koko-analytics/v1',
+            'pp-analytics/v1',
             '/referrers',
             array(
                 'methods'             => 'GET',
@@ -104,7 +104,7 @@ class Rest
         );
 
         register_rest_route(
-            'koko-analytics/v1',
+            'pp-analytics/v1',
             '/realtime',
             array(
                 'methods'             => 'GET',

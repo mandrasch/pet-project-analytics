@@ -6,7 +6,7 @@ const {nonce, root} = window.pp_analytics
  * @returns {Promise<any>}
  */
 export function request (path, params = {}) {
-  let url = root + 'koko-analytics/v1' + path;
+  let url = root + 'pp-analytics/v1' + path;
   url = url + (url.indexOf('?') > -1 ? '&' : '?') + (new URLSearchParams(params))
 
   return fetch(url, {
@@ -18,7 +18,7 @@ export function request (path, params = {}) {
   }).then(r => {
     // reject response when status is not ok-ish
     if (r.status >= 400) {
-      console.error('Koko Analytics encountered an error trying to request data from the REST endpoints. Please check your PHP error logs for the error that occurred.')
+      console.error('Pet Project Analytics encountered an error trying to request data from the REST endpoints. Please check your PHP error logs for the error that occurred.')
       throw new Error(r.statusText)
     }
 
