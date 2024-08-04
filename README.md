@@ -16,7 +16,7 @@ Status: 🚧 Work in progress / not intended for live usage yet. 🚧
 
 ## Why?
 
-I believe it would be great to have privacy-friendly analytics available on every (cheap) PHP webhost - so that people can easily track pageviews and referrers for their hobby projects. This could possibly also increase motivation. 
+I believe that it would be great to have privacy-friendly analytics available on every (cheap) PHP webhost - so that people can easily track pageviews and referrers for their hobby projects. This could possibly also increase motivation. 
 
 Why forking a Wordpress plugin? Almost every PHP webhost offers 1-click-WordPress installs nowadays -  not all offer composer  or SSH access. Otherwise this would be a nice Laravel Filament project. ;) 
 
